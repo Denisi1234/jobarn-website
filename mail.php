@@ -1,64 +1,99 @@
 <?php
-    // Jobarn Contact Form Handler - sends to both Jobarn emails
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = strip_tags(trim($_POST["name"]));
-        $name = str_replace(array("\r","\n"),array(" "," "),$name);
-        $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
-        $subject = trim($_POST["subject"]);
-        $phone = trim($_POST["phone"]);
-        $message = trim($_POST["message"]);
+// JOBARN Contact Form Handler - hardened professional version
+declare(strict_types=1);
+header('Content-Type: text/plain; charset=UTF-8');
+header('X-Content-Type-Options: nosniff');
 
-        if ( empty($name) OR empty($subject) OR empty($message) OR !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            http_response_code(400);
-            echo "Please complete required fields (Name, Email, Subject, Message) and try again.";
-            exit;
-        }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(403);
+    echo 'Invalid request method.';
+    exit;
+}
 
-        // Recipients - Jobarn
-        $recipient = "info@jobarn.co.tz, contact@jobarn.co.tz";
-        $replyTo = $email;
+// Honeypot anti-spam (field must exist in form as hidden "company")
+if (!empty($_POST['company'] ?? '')) {
+    http_response_code(200);
+    echo 'Message received. Thank you.';
+    exit;
+}
 
-        $subjectname = "New Contact: $subject - from $name";
+// Simple rate-limit: max 5 submissions per IP per 10 minutes
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$rateFile = sys_get_temp_dir() . '/jobarn_rate_' . md5($ip) . '.log';
+$now = time();
+$attempts = [];
+if (file_exists($rateFile)) {
+    $attempts = array_filter(array_map('intval', explode(',', (string)file_get_contents($rateFile))), fn($t) => ($now - $t) < 600);
+}
+if (count($attempts) >= 5) {
+    http_response_code(429);
+    echo 'Too many requests. Please try again in 10 minutes or call 0716 026 781.';
+    exit;
+}
+$attempts[] = $now;
+@file_put_contents($rateFile, implode(',', $attempts), LOCK_EX);
 
-        $email_content = "New message from Jobarn website contact form\n";
-        $email_content .= "============================================\n";
-        $email_content .= "Name: $name\n";
-        $email_content .= "Email: $email\n";
-        $email_content .= "Phone: $phone\n";
-        $email_content .= "Subject: $subject\n";
-        $email_content .= "Message:\n$message\n";
-        $email_content .= "============================================\n";
-        $email_content .= "Sent from: " . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'jobarn.co.tz') . "\n";
-        $email_content .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\n";
+function clean_text(string $v, int $max): string {
+    $v = trim($v);
+    $v = str_replace(["\r", "\n", "%0a", "%0d"], ' ', $v);
+    $v = strip_tags($v);
+    if (mb_strlen($v) > $max) $v = mb_substr($v, 0, $max);
+    return $v;
+}
 
-        $email_headers = "From: Jobarn Website <noreply@jobarn.co.tz>\r\n";
-        $email_headers .= "Reply-To: $name <$replyTo>\r\n";
-        $email_headers .= "MIME-Version: 1.0\r\n";
-        $email_headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-        $email_headers .= "X-Mailer: PHP/" . phpversion();
+$name = clean_text((string)($_POST['name'] ?? ''), 100);
+$emailRaw = trim((string)($_POST['email'] ?? ''));
+$email = filter_var($emailRaw, FILTER_VALIDATE_EMAIL) ? $emailRaw : '';
+$subject = clean_text((string)($_POST['subject'] ?? ''), 150);
+$phone = clean_text((string)($_POST['phone'] ?? ''), 30);
+$message = clean_text((string)($_POST['message'] ?? ''), 3000);
 
-        // Always log for real sender trace & success proof (works even if mail() disabled on Live Server)
-        $logDir = __DIR__ . "/messages";
-        if (!is_dir($logDir)) mkdir($logDir, 0755, true);
-        $logEntry = date("Y-m-d H:i:s") . " | From: $name <$email> | Phone: $phone | Subject: $subject | IP: " . $_SERVER['REMOTE_ADDR'] . "\n$message\n---\n";
-        file_put_contents($logDir . "/messages.log", $logEntry, FILE_APPEND | LOCK_EX);
-        $jsonFile = $logDir . "/messages.json";
-        $jsonData = file_exists($jsonFile) ? json_decode(file_get_contents($jsonFile), true) : [];
-        if (!is_array($jsonData)) $jsonData = [];
-        $jsonData[] = ["date"=>date("c"), "name"=>$name, "email"=>$email, "phone"=>$phone, "subject"=>$subject, "message"=>$message, "ip"=>$_SERVER['REMOTE_ADDR']];
-        file_put_contents($jsonFile, json_encode($jsonData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+// Strict name/phone to prevent header injection
+if (!preg_match('/^[\p{L}\p{M} .\'-]{2,100}$/u', $name)) {
+    http_response_code(400);
+    echo 'Please enter a valid name.';
+    exit;
+}
+if ($phone !== '' && !preg_match('/^[0-9+\s-]{6,30}$/', $phone)) {
+    http_response_code(400);
+    echo 'Please enter a valid phone number.';
+    exit;
+}
+if ($name === '' || $email === '' || $subject === '' || mb_strlen($message) < 5) {
+    http_response_code(400);
+    echo 'Please complete Name, valid Email, Subject and Message.';
+    exit;
+}
 
-        $sent = mail($recipient, $subjectname, $email_content, $email_headers);
-        // Treat logged message as SUCCESS even if mail() disabled (real sender stored) - shows success UX
-        http_response_code(200);
-        if ($sent) {
-            echo "✅ Success! Message from $name <$email> sent to info@jobarn.co.tz & contact@jobarn.co.tz. We will reply/call you at $phone or 0716026781 / 0745912000 shortly. (Ref: ".date("Ymd-His").")";
-        } else {
-            echo "✅ Received! Message from $name <$email> saved and will be forwarded to info@jobarn.co.tz & contact@jobarn.co.tz. (Mail server pending - but your message is stored). We will contact you at $phone / 0716026781 / 0745912000. (Ref: ".date("Ymd-His").")";
-        }
+$recipient = 'info@jobarn.co.tz, contact@jobarn.co.tz';
+$safeSubject = 'New Contact: ' . $subject . ' - from ' . $name;
 
-    } else {
-        http_response_code(403);
-        echo "There was a problem with your submission, please try again.";
-    }
-?>
+$host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', (string)$_SERVER['HTTP_HOST']) : 'jobarn.co.tz';
+$email_content = "New message from JOBARN website\n";
+$email_content .= "============================================\n";
+$email_content .= "Name: $name\nEmail: $email\nPhone: $phone\nSubject: $subject\n";
+$email_content .= "Message:\n$message\n============================================\n";
+$email_content .= "Site: $host\nIP: $ip\nDate: " . date('Y-m-d H:i:s') . "\n";
+
+$email_headers = "From: JOBARN Website <noreply@jobarn.co.tz>\r\n";
+$email_headers .= "Reply-To: $email\r\n";
+$email_headers .= "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n";
+$email_headers .= "X-Mailer: PHP/" . phpversion() . "\r\nX-Content-Type-Options: nosniff\r\n";
+
+// Private log outside public_html when possible, fallback to messages/ (protected by .htaccess)
+$baseDir = __DIR__;
+$privateDir = dirname($baseDir) . '/jobarn_private';
+$logDir = is_writable(dirname($baseDir)) ? $privateDir : $baseDir . '/messages';
+if (!is_dir($logDir)) @mkdir($logDir, 0750, true);
+$logLine = date('Y-m-d H:i:s') . " | $name <$email> | $phone | $subject | $ip\n";
+@file_put_contents($logDir . '/messages.log', $logLine . $message . "\n---\n", FILE_APPEND | LOCK_EX);
+
+$sent = @mail($recipient, $safeSubject, $email_content, $email_headers);
+
+http_response_code(200);
+$ref = date('Ymd-His');
+if ($sent) {
+    echo "Thank you $name. Your message has been sent. We will reply shortly. Ref: $ref";
+} else {
+    echo "Thank you $name. Your message has been received. We will contact you shortly. Ref: $ref";
+}

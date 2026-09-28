@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/jobarnco/public_html/
+    - /bin/cp 404.html about.html contact.html faq.html google505200829a39cb45.html index.html news-details-software.html news-details.html news.html project-details.html projects.html services-details.html services.html mail.php robots.txt sitemap.xml style.css $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH

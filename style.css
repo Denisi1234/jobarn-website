@@ -111,13 +111,14 @@ All the SCSS File in SCSS Folder of Assets Folder. You can read the doc file als
 .jobarn-whatsapp-float::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:jobarnPulse 2s infinite;pointer-events:none}
 @keyframes jobarnPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.45);opacity:0}}
 @media(max-width:576px){.jobarn-whatsapp-float{width:52px;height:52px;bottom:16px;right:16px;font-size:26px}}
-.brand-showcase-section{padding:55px 0 45px;background:#fff;border-bottom:1px solid #f2f4f7}
-.brand-showcase-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2.2px;color:#8a94a6;margin-bottom:8px}
-.brand-showcase-sub{font-size:13px;color:#8a94a6;margin:-5px 0 25px}
+.brand-showcase-section{padding:40px 0 35px;background:#fff;border-bottom:1px solid #f2f4f7;overflow:hidden}
+.brand-showcase-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:#8a94a6;margin:0 0 6px;line-height:1.5;padding:0 15px}
+.brand-showcase-sub{font-size:13px;color:#8a94a6;margin:0 0 20px;line-height:1.6;padding:0 15px;max-width:640px;margin-left:auto;margin-right:auto}
 .brand-carousel-active .slick-track{display:flex;align-items:center}
 .brand-logo-slide{padding:0 25px;outline:none;display:flex!important;align-items:center;justify-content:center;height:65px}
 .brand-logo-img{max-height:54px;width:auto;max-width:175px;object-fit:contain;margin:0 auto;opacity:.82;transition:all .35s}
 .brand-logo-slide:hover .brand-logo-img{opacity:1;transform:scale(1.07)}
+@media(max-width:768px){.brand-logo-slide{padding:0 15px;height:50px}.brand-logo-img{max-height:42px;max-width:130px;opacity:.95}}
 .single-testimonial-card .client-img{background-color:#eef2f7}
 .post-featured-thumb{min-height:220px}
 

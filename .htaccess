@@ -9,6 +9,25 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 RewriteCond %{THE_REQUEST} /index\.html [NC]
 RewriteRule ^(.*)index\.html$ /$1 [R=301,L]
 
+# Fix Google-indexed clean URLs from new site version -> old .html files
+# Prevents 404 when clicking search results like /services, /about-us, /products
+RewriteRule ^services/?$ /services.html [R=301,L]
+RewriteRule ^about-us/?$ /about.html [R=301,L]
+RewriteRule ^about/?$ /about.html [R=301,L]
+RewriteRule ^contact-us/?$ /contact.html [R=301,L]
+RewriteRule ^contact/?$ /contact.html [R=301,L]
+RewriteRule ^products/?$ /services.html [R=301,L]
+RewriteRule ^clients/?$ /projects.html [R=301,L]
+RewriteRule ^blog/?$ /news.html [R=301,L]
+RewriteRule ^projects/?$ /projects.html [R=301,L]
+RewriteRule ^news/?$ /news.html [R=301,L]
+RewriteRule ^faq/?$ /faq.html [R=301,L]
+
+# Generic fallback: any extensionless URL with matching .html file
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+?)/?$ /$1.html [R=301,L]
+
 # Block access to sensitive files
 RewriteRule ^\.git - [F,L]
 RewriteRule ^messages/ - [F,L]

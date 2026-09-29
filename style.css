@@ -115,10 +115,11 @@ All the SCSS File in SCSS Folder of Assets Folder. You can read the doc file als
 .brand-showcase-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:#8a94a6;margin:0 0 6px;line-height:1.5;padding:0 15px}
 .brand-showcase-sub{font-size:13px;color:#8a94a6;margin:0 0 20px;line-height:1.6;padding:0 15px;max-width:640px;margin-left:auto;margin-right:auto}
 .brand-carousel-active .slick-track{display:flex;align-items:center}
-.brand-logo-slide{padding:0 25px;outline:none;display:flex!important;align-items:center;justify-content:center;height:65px}
-.brand-logo-img{max-height:54px;width:auto;max-width:175px;object-fit:contain;margin:0 auto;opacity:.82;transition:all .35s}
-.brand-logo-slide:hover .brand-logo-img{opacity:1;transform:scale(1.07)}
-@media(max-width:768px){.brand-logo-slide{padding:0 15px;height:50px}.brand-logo-img{max-height:42px;max-width:130px;opacity:.95}}
+.brand-carousel-active .slick-slide{padding:0 5px}
+.brand-logo-slide{padding:0 20px!important;outline:none;display:flex!important;align-items:center;justify-content:center;height:70px!important;min-height:70px}
+.brand-logo-img{height:48px!important;width:auto!important;max-width:150px!important;object-fit:contain;margin:0 auto;opacity:1;image-rendering:auto;flex-shrink:0;transition:transform .3s}
+.brand-logo-slide:hover .brand-logo-img{transform:scale(1.06)}
+@media(max-width:768px){.brand-logo-slide{padding:0 12px!important;height:56px!important;min-height:56px}.brand-logo-img{height:38px!important;max-width:120px!important}}
 .single-testimonial-card .client-img{background-color:#eef2f7}
 .post-featured-thumb{min-height:220px}
 

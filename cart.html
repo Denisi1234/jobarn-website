@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Cart | Jobarn Tanzania</title>
+    <meta name="robots" content="noindex,follow">
+    <link rel="icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/icons.css">
+    <link rel="stylesheet" href="assets/ecommerce/bh_style.css">
+    <link rel="stylesheet" href="assets/css/site-footer.css">
+    <link rel="stylesheet" href="assets/ecommerce/collection.css">
+    <link rel="stylesheet" href="assets/ecommerce/cart.css">
+    <script src="assets/js/site-footer.js" defer></script>
+</head>
+<body class="collection-page cart-page">
+    <header class="collection-header" data-collection-header></header>
+    <main class="collection-shell cart-main" data-cart-page aria-labelledby="cartTitle">
+        <h1 id="cartTitle">Your cart</h1>
+        <div class="cart-layout">
+            <section aria-label="Cart items">
+                <div id="cartEmpty" class="cart-empty" hidden style="padding: 30px 0;">
+                    <i class="fa-solid fa-basket-shopping" style="font-size: 48px; color: #94a3b8; margin-bottom: 16px; display: block;"></i>
+                    <h2 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Your cart is currently empty</h2>
+                    <p style="color: #64748b; margin-bottom: 24px; font-size: 15px;">Explore our 2026 tech setups, pro cameras, custom workstations, and ergonomic desks.</p>
+                    <a class="cart-continue" href="collections/all.html" style="display: inline-block; background: #111; color: #fff; padding: 12px 28px; border-radius: 6px; font-weight: 600; text-decoration: none;">
+                        Explore All Products <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                    </a>
+                </div>
+                <table class="cart-table" id="cartTable" aria-label="Products in your cart" hidden>
+                    <colgroup><col><col class="cart-quantity-column"><col class="cart-total-column"></colgroup>
+                    <thead>
+                        <tr><th scope="col">Product</th><th scope="col">Quantity</th><th scope="col">Total</th></tr>
+                    </thead>
+                    <tbody id="cartItems"></tbody>
+                </table>
+                <a class="cart-continue" id="cartContinue" href="collections/all.html">Continue shopping <i class="fal fa-chevron-right" aria-hidden="true"></i></a>
+            </section>
+            <section class="cart-summary" id="cartSummary" aria-label="Order summary" hidden>
+                <fieldset class="cart-note">
+                    <legend><label for="cartNote">Order special instructions</label></legend>
+                    <textarea id="cartNote" rows="5" maxlength="1000"></textarea>
+                </fieldset>
+                <div class="cart-summary-total">
+                    <span>Total</span>
+                    <strong id="cartTotal" aria-live="polite">0.00 TZS</strong>
+                </div>
+                <button class="cart-checkout" id="whatsappCheckoutBtn" type="button">Checkout</button>
+                <p class="cart-checkout-note">Taxes and shipping are confirmed on WhatsApp.</p>
+            </section>
+        </div>
+        <template id="cartRowTemplate">
+            <tr>
+                <th scope="row">
+                    <div class="cart-product">
+                        <div class="cart-product-photo">
+                            <i class="fas fa-box" aria-hidden="true"></i>
+                            <img alt="" loading="lazy" hidden>
+                        </div>
+                        <span class="cart-product-name"></span>
+                    </div>
+                </th>
+                <td>
+                    <div class="cart-item-controls">
+                        <div class="cart-quantity">
+                            <button type="button" data-cart-action="decrease">−</button>
+                            <span class="cart-quantity-value"></span>
+                            <button type="button" data-cart-action="increase">+</button>
+                        </div>
+                        <button class="cart-remove" type="button" data-cart-action="remove"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+                    </div>
+                </td>
+                <td class="cart-line-total"></td>
+            </tr>
+        </template>
+    </main>
+    <footer class="jobarn-site-footer" data-site-footer></footer>
+    <script src="assets/ecommerce/collection-layout.js"></script>
+    <script src="assets/ecommerce/ecommerce.js"></script>
+</body>
+</html>

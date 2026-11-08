@@ -1,0 +1,868 @@
+[
+    {
+        "id": "jobarn-desk-2026-pro",
+        "title": "Jobarn Apex Pro Dual-Motor Standing Desk (160x80cm) [2026 Edition]",
+        "category": "desks",
+        "categoryName": "Standing Desks",
+        "price": 1650000,
+        "comparePrice": 1950000,
+        "rating": 5,
+        "reviewsCount": 42,
+        "badge": "2026 New Release",
+        "image": "assets/ecommerce/products/desk-140cm.jpg",
+        "images": [
+            "assets/ecommerce/products/desk-140cm.jpg"
+        ],
+        "description": "2026 flagship ultra-quiet dual motor smart desk with anti-collision gyro sensor, OLED touchscreen height presets, integrated cable management tray and wireless phone charging pad.",
+        "specs": [
+            "Ultra-quiet dual motor (<38dB)",
+            "OLED digital preset controller",
+            "Max load 140kg",
+            "3-stage telescoping legs (60-125cm)"
+        ],
+        "inStock": true,
+        "isFeatured": true,
+        "active": true
+    },
+    {
+        "id": "jobarn-desk-compact",
+        "title": "Jobarn SlimLine Single-Motor Electric Sit-Stand Desk (120x60cm)",
+        "category": "desks",
+        "categoryName": "Standing Desks",
+        "price": 1150000,
+        "comparePrice": 1350000,
+        "rating": 4.8,
+        "reviewsCount": 26,
+        "badge": "Popular",
+        "image": "assets/img/upgrades/desk-setup.webp",
+        "images": [
+            "assets/img/upgrades/desk-setup.webp"
+        ],
+        "description": "Compact smart electric desk engineered for studio apartments, home offices and creative workspaces with carbon-finish scratchproof top.",
+        "specs": [
+            "Rapid lifting mechanism (25mm/s)",
+            "4 Memory height presets",
+            "Eco-friendly laminate surface",
+            "Heavy-gauge steel T-frame"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-chair-2026-pro",
+        "title": "Jobarn ErgoMatrix Ergonomic Mesh Executive Office Chair [2026 Series]",
+        "category": "chairs",
+        "categoryName": "Ergonomic Chairs",
+        "price": 850000,
+        "comparePrice": 1100000,
+        "rating": 4.9,
+        "reviewsCount": 58,
+        "badge": "Top Rated",
+        "image": "assets/img/upgrades/ergonomic-chairs.jpg",
+        "images": [
+            "assets/img/upgrades/ergonomic-chairs.jpg"
+        ],
+        "description": "High-density German elastomeric mesh with dynamic self-adjusting lumbar support, 4D bi-directional armrests, retractable footrest and 145-degree recline.",
+        "specs": [
+            "Adaptive self-following lumbar support",
+            "4D metallic armrests",
+            "BIFMA Class 4 hydraulic piston",
+            "Breathable Korean mesh"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-chair-sihoo-m59",
+        "title": "Sihoo M59AS Modern Minimalist Ergonomic Task Chair",
+        "category": "chairs",
+        "categoryName": "Ergonomic Chairs",
+        "price": 520000,
+        "comparePrice": 620000,
+        "rating": 4.8,
+        "reviewsCount": 31,
+        "badge": "Best Seller",
+        "image": "assets/ecommerce/products/sihoo-m59as.jpg",
+        "images": [
+            "assets/ecommerce/products/sihoo-m59as.jpg"
+        ],
+        "description": "Sleek low-profile ergonomic desk chair designed for study rooms, modern offices and editing suites with folding armrests.",
+        "specs": [
+            "Foldable 90-degree padded armrests",
+            "Double curved spine frame",
+            "Thick high-resilience sponge cushion",
+            "Silent PU casters"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-comp-apple-m3-pro",
+        "title": "Apple MacBook Pro 16-inch M3 Pro (36GB RAM / 512GB SSD) Space Black",
+        "category": "computers",
+        "categoryName": "Computers & Laptops",
+        "price": 6850000,
+        "comparePrice": 7400000,
+        "rating": 5,
+        "reviewsCount": 18,
+        "badge": "Flagship 2026",
+        "image": "assets/ecommerce/products/macbook-pro-16.jpg",
+        "images": [
+            "assets/ecommerce/products/macbook-pro-16.jpg"
+        ],
+        "description": "Extreme powerhouse workstation for 8K video editing, 3D architecture, and software development. Up to 22 hours of battery life with Liquid Retina XDR display.",
+        "specs": [
+            "Apple M3 Pro 12-core CPU / 18-core GPU",
+            "36GB Unified Memory",
+            "512GB Ultra-Fast NVMe SSD",
+            "16.2-inch Liquid Retina XDR (120Hz ProMotion)"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-comp-dell-xps-16",
+        "title": "Dell XPS 16 (2026 Core Ultra 9 / RTX 4070 / 32GB RAM / 1TB SSD)",
+        "category": "computers",
+        "categoryName": "Computers & Laptops",
+        "price": 5950000,
+        "comparePrice": 6500000,
+        "rating": 4.9,
+        "reviewsCount": 14,
+        "badge": "2026 Ultra Series",
+        "image": "assets/ecommerce/products/dell-xps.jpg",
+        "images": [
+            "assets/ecommerce/products/dell-xps.jpg"
+        ],
+        "description": "CNC machined aluminum and Gorilla Glass 3 construction with 4K OLED touch display and dedicated AI NPU processing power.",
+        "specs": [
+            "Intel Core Ultra 9 185H with AI Boost",
+            "NVIDIA GeForce RTX 4070 8GB GDDR6",
+            "32GB LPDDR5x 7467MHz",
+            "1TB M.2 PCIe Gen4 NVMe"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-comp-thinkpad-p16",
+        "title": "Lenovo ThinkPad P16s Gen 3 Mobile Workstation",
+        "category": "computers",
+        "categoryName": "Computers & Laptops",
+        "price": 3850000,
+        "comparePrice": 4200000,
+        "rating": 4.9,
+        "reviewsCount": 20,
+        "badge": "Enterprise Pick",
+        "image": "assets/ecommerce/products/lenovo-thinkpad.jpg",
+        "images": [
+            "assets/ecommerce/products/lenovo-thinkpad.jpg"
+        ],
+        "description": "Military-grade durability engineered for corporate IT, CAD professionals, and enterprise remote workers with ISV certification.",
+        "specs": [
+            "AMD Ryzen 7 PRO 8840HS (8 Cores/16 Threads)",
+            "32GB DDR5 RAM",
+            "1TB SSD PCIe 4.0",
+            "16\" WQXGA 100% sRGB 400nits"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-mon-dell-ultrasharp-40",
+        "title": "Dell UltraSharp 40-inch Curved 5K Thunderbolt 4 Hub Monitor [2026]",
+        "category": "monitors",
+        "categoryName": "Monitors & Displays",
+        "price": 4250000,
+        "comparePrice": 4700000,
+        "rating": 5,
+        "reviewsCount": 22,
+        "badge": "5K 120Hz Flagship",
+        "image": "assets/img/upgrades/monitors.jpg",
+        "images": [
+            "assets/img/upgrades/monitors.jpg"
+        ],
+        "description": "The world's first 40-inch 5K (5120x2160) 120Hz monitor with IPS Black technology, 99% DCI-P3, and 140W single-cable Thunderbolt 4 power delivery.",
+        "specs": [
+            "Resolution: 5120 x 2160 WUHD @ 120Hz",
+            "IPS Black 2000:1 contrast ratio",
+            "Thunderbolt 4 Hub with 2.5GbE RJ45",
+            "Eye-care ComfortView Plus"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-mon-studio-display",
+        "title": "Apple Studio Display 27-inch 5K Retina Display with Tilt-Adjustable Stand",
+        "category": "monitors",
+        "categoryName": "Monitors & Displays",
+        "price": 4600000,
+        "comparePrice": 4950000,
+        "rating": 4.9,
+        "reviewsCount": 33,
+        "badge": "Apple Genuine",
+        "image": "assets/ecommerce/products/apple-studio-display.jpg",
+        "images": [
+            "assets/ecommerce/products/apple-studio-display.jpg"
+        ],
+        "description": "Stunning 27-inch 5K Retina display, 12MP Ultra-Wide camera with Center Stage, studio-quality three-mic array, and six-speaker sound system with Spatial Audio.",
+        "specs": [
+            "5120x2880 resolution at 218 ppi",
+            "600 nits brightness, 1 billion colors, P3 wide color",
+            "12MP Ultra Wide camera with Center Stage",
+            "Thunderbolt 3 upstream (96W host charge)"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-mon-asus-proart",
+        "title": "ASUS ProArt 32-inch 4K HDR Color-Accurate Creator Monitor",
+        "category": "monitors",
+        "categoryName": "Monitors & Displays",
+        "price": 2850000,
+        "comparePrice": 3200000,
+        "rating": 4.9,
+        "reviewsCount": 17,
+        "badge": "Color Accurate",
+        "image": "assets/img/upgrades/monitors.jpg",
+        "images": [
+            "assets/img/upgrades/monitors.jpg"
+        ],
+        "description": "Factory pre-calibrated Delta E < 1 color precision for professional videographers, photographers and digital colorists with built-in hardware calibrator.",
+        "specs": [
+            "32\" 4K UHD (3840 x 2160) IPS panel",
+            "Calman Verified 100% sRGB / 98% DCI-P3",
+            "HDR10 & Dolby Vision support",
+            "USB-C 90W PD, HDMI 2.1, DisplayPort 1.4"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-cam-sony-a7rv",
+        "title": "Sony Alpha a7R V Mirrorless Camera (Body Only) [61MP AI Autofocus]",
+        "category": "photography",
+        "categoryName": "Photography & Cameras",
+        "price": 7950000,
+        "comparePrice": 8600000,
+        "rating": 5,
+        "reviewsCount": 29,
+        "badge": "2026 Pro Choice",
+        "image": "assets/ecommerce/products/sony-a7rv.jpg",
+        "images": [
+            "assets/ecommerce/products/sony-a7rv.jpg"
+        ],
+        "description": "Flagship 61MP full-frame Exmor R BSI CMOS sensor paired with Sony's revolutionary dedicated AI processing unit for human/vehicle/animal real-time tracking.",
+        "specs": [
+            "61MP Full-Frame Exmor R BSI Sensor",
+            "8K 24p / 4K 60p 10-Bit Video",
+            "8-Stop 5-Axis In-Body Image Stabilization",
+            "9.44m-Dot QXGA OLED EVF"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-cam-canon-r5ii",
+        "title": "Canon EOS R5 Mark II Mirrorless Camera with 24-105mm f/4L Kit",
+        "category": "photography",
+        "categoryName": "Photography & Cameras",
+        "price": 10500000,
+        "comparePrice": 11500000,
+        "rating": 5,
+        "reviewsCount": 21,
+        "badge": "New Release",
+        "image": "assets/ecommerce/products/canon-r5.jpg",
+        "images": [
+            "assets/ecommerce/products/canon-r5.jpg"
+        ],
+        "description": "45MP Stacked Full-Frame sensor with Accelerated Capture processing, Eye Control AF, 8.5-stop stabilization, and internal 8K 60p RAW video recording.",
+        "specs": [
+            "45MP Full-Frame Stacked BSI Sensor",
+            "8K 60p RAW / 4K 120p 10-Bit Video",
+            "Eye Control AF and Action Priority Tracking",
+            "Up to 30 fps Electronic Shutter"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-lens-sony-2470gm2",
+        "title": "Sony FE 24-70mm f/2.8 GM II Lens (G Master)",
+        "category": "photography",
+        "categoryName": "Photography & Cameras",
+        "price": 4950000,
+        "comparePrice": 5400000,
+        "rating": 5,
+        "reviewsCount": 38,
+        "badge": "G Master",
+        "image": "assets/img/departments/photography.png",
+        "images": [
+            "assets/img/departments/photography.png"
+        ],
+        "description": "The world's lightest and most compact standard zoom lens in its class, offering breathtaking corner-to-corner sharpness and beautiful circular bokeh.",
+        "specs": [
+            "Constant f/2.8 max aperture",
+            "Four XD Linear Motors for lightning AF",
+            "Nano AR Coating II reduces flares",
+            "Dust and moisture resistant"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-video-sony-fx3",
+        "title": "Sony FX3 Cinema Line Full-Frame Camera [Ver. 4 Firmware]",
+        "category": "pro-video",
+        "categoryName": "Pro Video & Cinema",
+        "price": 8600000,
+        "comparePrice": 9200000,
+        "rating": 5,
+        "reviewsCount": 44,
+        "badge": "Cinema Standard",
+        "image": "assets/ecommerce/products/sony-fx3.jpg",
+        "images": [
+            "assets/ecommerce/products/sony-fx3.jpg"
+        ],
+        "description": "Industry benchmark cinema tool featuring S-Cinetone, 4K 120p, dual base ISO (800/12800), internal active cooling fan for unlimited record times, and top XLR handle.",
+        "specs": [
+            "12.1MP Full-Frame Exmor R BSI CMOS",
+            "10-Bit 4:2:2 XAVC S-I, 16-Bit Raw Output",
+            "S-Cinetone / S-Log3 / HLG Presets",
+            "Active cooling fan prevents overheating"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-video-blackmagic-pyxis",
+        "title": "Blackmagic PYXIS 6K Full-Frame Cinema Box Camera (L-Mount)",
+        "category": "pro-video",
+        "categoryName": "Pro Video & Cinema",
+        "price": 7450000,
+        "comparePrice": 8100000,
+        "rating": 4.9,
+        "reviewsCount": 19,
+        "badge": "2026 Production Choice",
+        "image": "assets/img/upgrades/production.jpg",
+        "images": [
+            "assets/img/upgrades/production.jpg"
+        ],
+        "description": "Versatile cube modular cinema camera with 36x24mm 6K sensor, 13 stops of dynamic range, dual native ISO up to 25600 and dual CFexpress recording.",
+        "specs": [
+            "Full-Frame 6K 6048 x 4032 Sensor",
+            "Open Gate 3:2, 6:5 Anamorphic & Super 35",
+            "Dual CFexpress Type-B Card Slots",
+            "High-brightness 4-inch HDR touchscreen"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-camcord-sony-z190",
+        "title": "Sony PXW-Z190 4K 3-CMOS 1/3-inch Sensor XDCAM Camcorder",
+        "category": "camcorders",
+        "categoryName": "Camcorders",
+        "price": 8900000,
+        "comparePrice": 9600000,
+        "rating": 4.9,
+        "reviewsCount": 15,
+        "badge": "Broadcast Standard",
+        "image": "assets/img/departments/camcorders.png",
+        "images": [
+            "assets/img/departments/camcorders.png"
+        ],
+        "description": "Professional ENG broadcast camcorder with 25x optical zoom lens, advanced Face Detection AF, electronic variable ND filter, and 4K 50p/60p recording.",
+        "specs": [
+            "Three 1/3\" Exmor R CMOS Sensors",
+            "4K 60p Recording in XAVC-L",
+            "25x Optical Sony G Zoom Lens",
+            "Dual SD Card Slots & 4-Channel Audio"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-camcord-canon-xa70",
+        "title": "Canon XA70 Professional 4K UHD Camcorder with 15x Zoom",
+        "category": "camcorders",
+        "categoryName": "Camcorders",
+        "price": 5400000,
+        "comparePrice": 5950000,
+        "rating": 4.8,
+        "reviewsCount": 23,
+        "badge": "Event & Church Favorite",
+        "image": "assets/img/departments/camcorders.png",
+        "images": [
+            "assets/img/departments/camcorders.png"
+        ],
+        "description": "Compact 1.0-inch Type CMOS sensor 4K camcorder featuring Dual Pixel CMOS AF, 15x optical zoom, 5-axis optical stabilization, and 3G-SDI output.",
+        "specs": [
+            "1\" Type CMOS Sensor 4K UHD",
+            "15x Optical Zoom (25.5-382.5mm)",
+            "Dual Pixel CMOS AF with Touch Tracking",
+            "USB-C Video Out for Live Streaming UVC"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-drone-dji-air3s",
+        "title": "DJI Air 3S Fly More Combo (DJI RC 2 Screen Controller) [2026]",
+        "category": "drones",
+        "categoryName": "Drones & Aerial",
+        "price": 4200000,
+        "comparePrice": 4650000,
+        "rating": 5,
+        "reviewsCount": 35,
+        "badge": "2026 New Drone",
+        "image": "assets/img/departments/drones.png",
+        "images": [
+            "assets/img/departments/drones.png"
+        ],
+        "description": "Dual primary cameras with 1-inch CMOS primary camera + 70mm medium telephoto camera, forward-facing LiDAR night obstacle avoidance, and 45-min flight time.",
+        "specs": [
+            "1\" CMOS Primary + 1/1.3\" CMOS Medium Tele",
+            "4K 60fps HDR & 4K 120fps Slow-Mo",
+            "Next-Gen Nightscape Omnidirectional Sensing with LiDAR",
+            "45-Minute Max Flight Time"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-drone-dji-mini4pro",
+        "title": "DJI Mini 4 Pro Fly More Combo Plus (Under 249g)",
+        "category": "drones",
+        "categoryName": "Drones & Aerial",
+        "price": 3100000,
+        "comparePrice": 3450000,
+        "rating": 4.9,
+        "reviewsCount": 48,
+        "badge": "Top Travel Drone",
+        "image": "assets/ecommerce/products/dji-drone.jpg",
+        "images": [
+            "assets/ecommerce/products/dji-drone.jpg"
+        ],
+        "description": "Ultra-lightweight regulation-friendly drone featuring omnidirectional obstacle avoidance, True Vertical Shooting for TikTok/Reels, and 20km FHD video transmission.",
+        "specs": [
+            "Under 249g Regulatory-friendly design",
+            "4K 60fps HDR True Vertical Shooting",
+            "Omnidirectional active obstacle sensing",
+            "Up to 45 mins with Intelligent Flight Battery Plus"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-light-aputure-300c",
+        "title": "Aputure Amaran 300c RGBWW Full-Color Studio LED Spotlight",
+        "category": "lighting",
+        "categoryName": "Studio & Lighting",
+        "price": 2150000,
+        "comparePrice": 2450000,
+        "rating": 4.9,
+        "reviewsCount": 27,
+        "badge": "RGBWW Power",
+        "image": "assets/img/departments/lighting.png",
+        "images": [
+            "assets/img/departments/lighting.png"
+        ],
+        "description": "300W RGBWW Bowens-mount point-source LED light delivering 26,580 lux output at 1 meter, Sidus Link wireless app control, and ultra-high CRI 95+ color fidelity.",
+        "specs": [
+            "300W Full-Color RGBWW Output",
+            "2500K to 7500K CCT Range with G/M Adjustment",
+            "Universal Bowens Mount for Softboxes",
+            "Sidus Link Bluetooth App Control"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-light-nanlite-pavotube",
+        "title": "Nanlite PavoTube II 30C 4-Foot RGBWW LED Pixel Tube Light Kit",
+        "category": "lighting",
+        "categoryName": "Studio & Lighting",
+        "price": 1450000,
+        "comparePrice": 1680000,
+        "rating": 4.9,
+        "reviewsCount": 36,
+        "badge": "Creative Must-Have",
+        "image": "assets/img/departments/lighting.png",
+        "images": [
+            "assets/img/departments/lighting.png"
+        ],
+        "description": "Internal rechargeable lithium battery tube light with built-in pixel effects, full 360-degree color hue adjustment, and seamless studio mounting.",
+        "specs": [
+            "4ft / 120cm RGBWW Tube Light",
+            "Built-in Rechargeable 4400mAh Battery (2+ hours)",
+            "2700K - 7500K with Green/Magenta Shift",
+            "15 Built-In Lighting & Pixel Effects"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-optics-nikon-monarch",
+        "title": "Nikon Monarch M7 10x42 Waterproof ED Glass Binoculars",
+        "category": "optics",
+        "categoryName": "Optics & Scopes",
+        "price": 1380000,
+        "comparePrice": 1550000,
+        "rating": 5,
+        "reviewsCount": 24,
+        "badge": "Safari Standard",
+        "image": "assets/ecommerce/products/binoculars.jpg",
+        "images": [
+            "assets/ecommerce/products/binoculars.jpg"
+        ],
+        "description": "Premium ED (Extra-Low Dispersion) glass safari binoculars offering wide field of view, nitrogen-purged fogproof body, and phase-corrected dielectric multilayer prism coating.",
+        "specs": [
+            "10x Magnification with 42mm Objective Lenses",
+            "Extra-Low Dispersion (ED) Glass",
+            "Waterproof down to 1m for 10 minutes",
+            "Locking diopter ring prevents accidental shifts"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-kbd-logitech-master",
+        "title": "Logitech MX Master 3S Wireless Performance Mouse (Quiet Clicks / 8K DPI)",
+        "category": "accessories",
+        "categoryName": "Keyboards & Peripherals",
+        "price": 285000,
+        "comparePrice": 340000,
+        "rating": 5,
+        "reviewsCount": 84,
+        "badge": "Essential Productivity",
+        "image": "assets/ecommerce/products/logitech-mx-master.jpg",
+        "images": [
+            "assets/ecommerce/products/logitech-mx-master.jpg"
+        ],
+        "description": "The definitive ergonomic mouse for programmers, video editors and executives with MagSpeed electromagnetic scrolling and glass-tracking 8000 DPI sensor.",
+        "specs": [
+            "Any-surface 8K DPI Darkfield optical sensor",
+            "Quiet Click buttons (90% noise reduction)",
+            "MagSpeed 1000 lines/second scroll wheel",
+            "USB-C quick charging (70 days full charge)"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-kbd-keychron-q1",
+        "title": "Keychron Q1 Max 75% QMK/VIA Wireless Custom Mechanical Keyboard",
+        "category": "accessories",
+        "categoryName": "Keyboards & Peripherals",
+        "price": 540000,
+        "comparePrice": 620000,
+        "rating": 5,
+        "reviewsCount": 42,
+        "badge": "2026 Custom Series",
+        "image": "assets/img/upgrades/keyboards.jpg",
+        "images": [
+            "assets/img/upgrades/keyboards.jpg"
+        ],
+        "description": "Full CNC aluminum body with double-gasket acoustic mounting, acoustic sound-absorbing foam, hot-swappable switches, and 2.4GHz / Bluetooth 5.1 / Type-C wired connectivity.",
+        "specs": [
+            "Full CNC machined 6063 aluminum body",
+            "Double-gasket acoustic mount design",
+            "Hot-swappable 3/5-pin switch sockets",
+            "Compatible with Mac & Windows"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-audio-shure-sm7db",
+        "title": "Shure SM7dB Dynamic Vocal Microphone with Built-in Preamp [2026]",
+        "category": "audio",
+        "categoryName": "Pro Audio & Microphones",
+        "price": 1450000,
+        "comparePrice": 1650000,
+        "rating": 5,
+        "reviewsCount": 49,
+        "badge": "Industry Legend",
+        "image": "assets/ecommerce/products/shure-mv7.webp",
+        "images": [
+            "assets/ecommerce/products/shure-mv7.webp"
+        ],
+        "description": "The world's most recognizable vocal microphone upgraded with a built-in active preamp licensed by Cloud, delivering +18dB or +28dB of crystal-clean transparent gain.",
+        "specs": [
+            "Built-in Active Preamp (+18dB / +28dB gain)",
+            "Classic smooth cardioid dynamic vocal capsule",
+            "Electromagnetic humbucking shielding",
+            "Bass roll-off and mid-range boost presence switches"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-audio-rode-casterpro2",
+        "title": "RØDE Caster Pro II All-in-One Audio Production Studio",
+        "category": "audio",
+        "categoryName": "Pro Audio & Microphones",
+        "price": 2250000,
+        "comparePrice": 2550000,
+        "rating": 4.9,
+        "reviewsCount": 33,
+        "badge": "Studio Brain",
+        "image": "assets/img/upgrades/audio-equipments.jpg",
+        "images": [
+            "assets/img/upgrades/audio-equipments.jpg"
+        ],
+        "description": "The ultimate podcasting, live streaming and broadcasting production console with ultra-low-noise Revolution Preamps and studio-grade APHEX audio processing.",
+        "specs": [
+            "4 High-End Neutrik Combo XLR/TRS Inputs",
+            "Ultra-Low-Noise Revolution Preamps (-131.5dBV EIN)",
+            "Customizable SMART pads with sound FX & MIDI",
+            "Dual USB-C audio interfaces for two computers/phones"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-audio-dji-mic2",
+        "title": "DJI Mic 2 Wireless Microphone System (2 TX + 1 RX + Charging Case)",
+        "category": "audio",
+        "categoryName": "Pro Audio & Microphones",
+        "price": 1150000,
+        "comparePrice": 1300000,
+        "rating": 5,
+        "reviewsCount": 61,
+        "badge": "Creator Essential",
+        "image": "assets/ecommerce/products/studio-mic.jpg",
+        "images": [
+            "assets/ecommerce/products/studio-mic.jpg"
+        ],
+        "description": "32-bit float internal audio recording, smart intelligent active noise cancelling, 250m line-of-sight wireless transmission, and sleek transparent casing.",
+        "specs": [
+            "32-bit Float Internal Recording avoids clipping",
+            "Intelligent Active Noise Cancelling",
+            "Up to 250m Transmission Range",
+            "18-Hour total battery life with Charging Case"
+        ],
+        "inStock": true,
+        "isFeatured": true,
+        "active": true
+    },
+    {
+        "id": "jobarn-cctv-hik-colorvu",
+        "title": "Hikvision 8MP 4K ColorVu AI Smart Turret PoE Security Kit (8-Cam + 16CH NVR)",
+        "category": "security",
+        "categoryName": "Surveillance & CCTV",
+        "price": 3450000,
+        "comparePrice": 3950000,
+        "rating": 4.9,
+        "reviewsCount": 38,
+        "badge": "Commercial Security",
+        "image": "assets/ecommerce/products/surveillance-cctv.jpg",
+        "images": [
+            "assets/ecommerce/products/surveillance-cctv.jpg"
+        ],
+        "description": "Enterprise-grade 24/7 vivid color night vision security suite with AcuSense Deep Learning algorithm that distinguishes human beings and vehicles from false alarms.",
+        "specs": [
+            "8x 4K 8MP PoE ColorVu Audio Turret Cameras",
+            "1x 16-Channel 4K NVR with 4TB Surveillance Hard Drive",
+            "24/7 Full-Color imaging with F1.0 super-aperture",
+            "AcuSense AI Human and Vehicle False-Alarm Filter"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-net-unifi-dream-pro",
+        "title": "Ubiquiti UniFi Dream Machine Special Edition (UDM-SE) 10G Gateway & PoE",
+        "category": "networking",
+        "categoryName": "Networking & IT Infrastructure",
+        "price": 2450000,
+        "comparePrice": 2750000,
+        "rating": 5,
+        "reviewsCount": 27,
+        "badge": "Enterprise Core",
+        "image": "assets/ecommerce/products/unifi-ap.jpg",
+        "images": [
+            "assets/ecommerce/products/unifi-ap.jpg"
+        ],
+        "description": "All-in-one 10G SFP+ enterprise security gateway, network controller, integrated 8-port PoE/PoE+ switch, and UniFi Protect NVR storage bay for offices.",
+        "specs": [
+            "3.5 Gbps+ Full Threat Management routing",
+            "Integrated 8-port Gigabit PoE/PoE+ Switch",
+            "Dual WAN: 2.5 GbE RJ45 + 10G SFP+",
+            "Built-in 128GB SSD + 3.5\" HDD Bay for NVR"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-net-unifi-u7pro",
+        "title": "Ubiquiti UniFi U7 Pro WiFi 7 Tri-Band Ceiling Access Point [2026]",
+        "category": "networking",
+        "categoryName": "Networking & IT Infrastructure",
+        "price": 850000,
+        "comparePrice": 980000,
+        "rating": 5,
+        "reviewsCount": 19,
+        "badge": "WiFi 7 Next-Gen",
+        "image": "assets/ecommerce/products/unifi-ap.jpg",
+        "images": [
+            "assets/ecommerce/products/unifi-ap.jpg"
+        ],
+        "description": "Next-generation WiFi 7 access point with 6GHz tri-band spectrum support, 9.3 Gbps over-the-air throughput, and 2.5 GbE uplink port for high-density modern offices.",
+        "specs": [
+            "WiFi 7 (802.11be) with 6 GHz support",
+            "9.3 Gbps aggregate throughput",
+            "2.5 GbE uplink with 802.3at PoE+ power",
+            "Supports 300+ concurrent client devices"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-gaming-custom-pc",
+        "title": "Jobarn CyberForge RTX 4090 Liquid-Cooled Custom Gaming & AI Workstation",
+        "category": "gaming",
+        "categoryName": "Gaming Gear",
+        "price": 14500000,
+        "comparePrice": 16000000,
+        "rating": 5,
+        "reviewsCount": 15,
+        "badge": "Ultimate Beast",
+        "image": "assets/img/upgrades/custom-pc-poster.jpg",
+        "images": [
+            "assets/img/upgrades/custom-pc-poster.jpg"
+        ],
+        "description": "Extreme custom gaming monster: Intel Core i9-14900KS, NVIDIA GeForce RTX 4090 24GB, 64GB DDR5 6400MHz RGB RAM, 4TB Gen5 SSD, and dual 360mm custom liquid cooling loop in tempered panoramic glass.",
+        "specs": [
+            "Intel Core i9-14900KS (24 Cores up to 6.2GHz)",
+            "NVIDIA GeForce RTX 4090 24GB GDDR6X",
+            "64GB Corsair Dominator Titanium DDR5",
+            "Dual 360mm ARGB AIO Liquid Cooling"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-gaming-ps5-pro",
+        "title": "Sony PlayStation 5 Pro Console (2TB SSD / 4K 120Hz Ray Tracing) [2026]",
+        "category": "gaming",
+        "categoryName": "Gaming Gear",
+        "price": 2850000,
+        "comparePrice": 3200000,
+        "rating": 5,
+        "reviewsCount": 54,
+        "badge": "2026 Console",
+        "image": "assets/ecommerce/products/ps5-pro.png",
+        "images": [
+            "assets/ecommerce/products/ps5-pro.png"
+        ],
+        "description": "PlayStation Spectral Super Resolution (PSSR) AI upscaling, enhanced Ray Tracing, 2TB high-speed NVMe SSD, and DualSense wireless controller.",
+        "specs": [
+            "PlayStation Spectral Super Resolution (PSSR)",
+            "Upgraded GPU with 67% more Compute Units",
+            "2TB High-Speed Internal SSD",
+            "WiFi 7 wireless networking"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-used-macbook-m1max",
+        "title": "Certified Pre-Owned Apple MacBook Pro 16-inch M1 Max (32GB / 1TB SSD) [Grade A+]",
+        "category": "used",
+        "categoryName": "Certified Used Gear",
+        "price": 3850000,
+        "comparePrice": 5200000,
+        "rating": 4.9,
+        "reviewsCount": 22,
+        "badge": "Save 26%",
+        "image": "assets/ecommerce/products/macbook-pro-16.jpg",
+        "images": [
+            "assets/ecommerce/products/macbook-pro-16.jpg"
+        ],
+        "description": "Fully inspected, bench-tested, sanitized and certified Grade A+ with 100% battery health and Jobarn 6-Month Comprehensive Warranty.",
+        "specs": [
+            "Apple M1 Max 10-core CPU / 32-core GPU",
+            "32GB Unified Memory / 1TB SSD",
+            "Battery Health 98%+",
+            "Jobarn 6-Month Warranty Included"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-used-sony-a73",
+        "title": "Certified Pre-Owned Sony Alpha a7 III Full-Frame Camera [Shutter Count < 8K]",
+        "category": "used",
+        "categoryName": "Certified Used Gear",
+        "price": 2650000,
+        "comparePrice": 3400000,
+        "rating": 4.8,
+        "reviewsCount": 35,
+        "badge": "Grade A+",
+        "image": "assets/ecommerce/products/sony-a7rv.jpg",
+        "images": [
+            "assets/ecommerce/products/sony-a7rv.jpg"
+        ],
+        "description": "Flawless sensor, pristine body with zero cosmetic blemishes. Comes with original packaging, Sony battery and external charger.",
+        "specs": [
+            "24.2MP BSI Full-Frame Sensor",
+            "Verified low shutter count (<8000 shutter actuations)",
+            "Dual SD card slots & 5-axis IBIS",
+            "Jobarn Certified Inspection Seal"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    },
+    {
+        "id": "jobarn-acc-caldigit-ts4",
+        "title": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports / 98W Charging / Dual 6K)",
+        "category": "accessories",
+        "categoryName": "Accessories & Gadgets",
+        "price": 1250000,
+        "comparePrice": 1450000,
+        "rating": 5,
+        "reviewsCount": 47,
+        "badge": "Pro Dock",
+        "image": "assets/img/upgrades/gadgets.jpg",
+        "images": [
+            "assets/img/upgrades/gadgets.jpg"
+        ],
+        "description": "The ultimate single-cable docking station with 18 ports of extreme connectivity: 3x Thunderbolt 4, 2.5 Gigabit Ethernet, SD 4.0 UHS-II, and 98W laptop fast charging.",
+        "specs": [
+            "18 Connectivity Ports",
+            "Single-cable 98W laptop power charging",
+            "2.5 Gigabit High-Speed Ethernet",
+            "Supports up to dual 6K 60Hz displays"
+        ],
+        "inStock": true,
+        "isFeatured": true
+    },
+    {
+        "id": "jobarn-acc-anker-prime-250w",
+        "title": "Anker Prime 250W GaN 6-Port Smart Desktop Fast Charging Station",
+        "category": "accessories",
+        "categoryName": "Accessories & Gadgets",
+        "price": 420000,
+        "comparePrice": 490000,
+        "rating": 4.9,
+        "reviewsCount": 53,
+        "badge": "GaN Tech",
+        "image": "assets/ecommerce/products/skadis-pegboard.jpg",
+        "images": [
+            "assets/ecommerce/products/skadis-pegboard.jpg"
+        ],
+        "description": "Charge two 16-inch MacBooks and four mobile devices simultaneously with dynamic 250W GaN power distribution and real-time digital LCD power display.",
+        "specs": [
+            "250W Total Multi-Device Fast Output",
+            "4x USB-C + 2x USB-A Ports",
+            "Real-Time Digital Wattage Display",
+            "ActiveShield 2.0 temperature protection"
+        ],
+        "inStock": true,
+        "isFeatured": false
+    }
+]

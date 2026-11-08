@@ -1,0 +1,359 @@
+/* ==========================================================================
+   CLASSIC JOBARN FOOTER STYLING (STANDALONE WITH FULL GRID LAYOUT)
+   ========================================================================== */
+
+.jobarn-site-footer {
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 40;
+    margin-top: 0;
+    box-sizing: border-box;
+}
+
+.jobarn-site-footer * {
+    box-sizing: border-box;
+}
+
+.jobarn-site-footer .footer-1 {
+    background: #171717;
+    color: #fff;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.jobarn-site-footer .footer-widgets-wrapper {
+    padding: 70px 0 50px 0;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: #171717;
+}
+
+.jobarn-site-footer .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.jobarn-site-footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+/* Grid layout */
+.jobarn-site-footer .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 15px;
+}
+
+.jobarn-site-footer .col-sm-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+
+.jobarn-site-footer .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+
+.jobarn-site-footer .col-lg-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding: 0 15px;
+}
+
+.jobarn-site-footer .col-lg-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+    padding: 0 15px;
+}
+
+.jobarn-site-footer .col-xl-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 15px;
+}
+
+@media (min-width: 992px) {
+    .jobarn-site-footer .col-lg-4 {
+        flex: 0 0 35%;
+        max-width: 35%;
+    }
+    .jobarn-site-footer .col-lg-2 {
+        flex: 0 0 17.5%;
+        max-width: 17.5%;
+    }
+    .jobarn-site-footer .col-lg-4:last-child {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+    .jobarn-site-footer .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+.jobarn-site-footer .text-md-end {
+    text-align: right;
+}
+
+/* Column 1: About Jobarn */
+.jobarn-site-footer .about-jobarn p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin-top: 14px;
+}
+
+/* Titles */
+.jobarn-site-footer .wid-title h3 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 22px 0;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.jobarn-site-footer .wid-title h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+/* Lists */
+.jobarn-site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.jobarn-site-footer ul li {
+    margin-bottom: 11px;
+    list-style: none;
+}
+
+.jobarn-site-footer ul li a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: color 0.2s, padding-left 0.2s;
+    display: inline-block;
+}
+
+.jobarn-site-footer ul li a:hover {
+    color: #ffffff;
+    padding-left: 4px;
+}
+
+/* Contact Info */
+.jobarn-site-footer .get-in-touch {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.jobarn-site-footer .single-contact-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.jobarn-site-footer .single-contact-info .icon {
+    color: #ffffff;
+    font-size: 16px;
+    margin-top: 3px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.jobarn-site-footer .single-contact-info .contact-info {
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+/* Newsletter Box */
+.jobarn-site-footer .newsletter_box form {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+    max-width: 100%;
+}
+
+.jobarn-site-footer .newsletter_box input {
+    flex: 1;
+    height: 42px;
+    background: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    padding: 0 14px;
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+}
+
+.jobarn-site-footer .newsletter_box .submit-btn {
+    width: 48px;
+    height: 42px;
+    background: #ffffff;
+    color: #111111;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.jobarn-site-footer .newsletter_box .submit-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Footer Bottom Bar */
+.jobarn-site-footer .footer-bottom {
+    background: #0f0f0f;
+    padding: 22px 0;
+    border-top: 1px solid #262626;
+    color: #888;
+    font-size: 13px;
+}
+
+.jobarn-site-footer .bottom-content-wrapper {
+    width: 100%;
+}
+
+.jobarn-site-footer .copy-rights p {
+    margin: 0;
+    color: #999;
+}
+
+.jobarn-site-footer .copy-rights strong {
+    color: #fff;
+}
+
+.jobarn-site-footer .social-links {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.jobarn-site-footer .social-links a {
+    width: 36px;
+    height: 36px;
+    background: #222;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.jobarn-site-footer .social-links a:hover {
+    background: #ffffff;
+    color: #111111;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ORIGINAL "NEED HELP? CHAT WITH US!" FLOATING WIDGET
+   ========================================================================== */
+.njwa-clean-widget {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.njwa-clean-bubble {
+    background: #ffffff;
+    color: #222222;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+    position: relative;
+    white-space: nowrap;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.njwa-clean-widget:hover .njwa-clean-bubble {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.njwa-clean-icon {
+    width: 56px;
+    height: 56px;
+    background: #25d366;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+}
+
+.njwa-clean-widget:hover .njwa-clean-icon {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+/* Responsive grid breakdown */
+@media (max-width: 1100px) {
+    .jobarn-site-footer .col-xl-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .jobarn-site-footer .col-sm-6,
+    .jobarn-site-footer .col-xl-3,
+    .jobarn-site-footer .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 25px;
+    }
+    .jobarn-site-footer .social-links {
+        justify-content: flex-start;
+        margin-top: 15px;
+    }
+    .njwa-clean-bubble {
+        display: none;
+    }
+}

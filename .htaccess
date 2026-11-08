@@ -31,6 +31,7 @@ RewriteRule ^(.+?)/?$ /$1.html [R=301,L]
 # Block access to sensitive files
 RewriteRule ^\.git - [F,L]
 RewriteRule ^messages/ - [F,L]
+RewriteRule ^data/admin\.json$ - [F,L]
 <FilesMatch "^(mail\.php)$">
   <LimitExcept POST>
     Require all denied
@@ -42,6 +43,9 @@ RewriteRule ^messages/ - [F,L]
 <FilesMatch "^\.">
 Require all denied
 </FilesMatch>
+<Files "admin.json">
+Require all denied
+</Files>
 <Files "google505200829a39cb45.html">
 Require all granted
 </Files>

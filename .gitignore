@@ -1,0 +1,29 @@
+# System & Editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Large Raw Video Backups (optimized -web.mp4 versions are deployed)
+assets/video/video_new_tumehama.mp4
+assets/video/video1.mp4
+assets/video/video2.mp4
+assets/video/video3.mp4
+assets/video/video4.mp4
+assets/video/video5.mp4
+assets/img/upgrades/custom-pc.mp4
+
+# Admin secrets, customer messages & user uploads
+data/admin.json
+messages/
+uploads/*
+!uploads/.htaccess
+
+# Temporary Scrape Dumps
+upstore_raw.html
+upstore_items.json
+dump_*.py
+inspect_*.py
+extract_*.py
+parse_*.py

@@ -1,12 +1,13 @@
 // Jobarn Storefront Service Worker - High Performance Cache & Adaptive 2G/3G Preloader
-const CACHE_NAME = 'jobarn-media-v3';
+const CACHE_NAME = 'jobarn-media-v5';
 
-// 1. Critical lightweight assets (HTML, CSS, JS, logo, key products - ~150KB total)
+// 1. Critical lightweight assets (HTML, CSS, JS, logo, key products, tech workspace assets - ~200KB total)
 // Downloaded immediately even on slow 2G/3G connections without clogging data
 const CRITICAL_ASSETS = [
   '/',
   '/index.html',
   '/cart.html',
+  '/collections/all.html',
   '/assets/ecommerce/cart.css',
   '/assets/ecommerce/bh_style.css',
   '/assets/css/site-footer.css',
@@ -14,6 +15,14 @@ const CRITICAL_ASSETS = [
   '/assets/js/site-header.js',
   '/assets/js/site-footer.js',
   '/assets/img/jobarn-logo.jpeg',
+  '/assets/img/upgrades/desk-setup.webp',
+  '/assets/img/upgrades/production.jpg',
+  '/assets/img/upgrades/custom-pc-poster.jpg',
+  '/assets/img/upgrades/keyboards.jpg',
+  '/assets/img/upgrades/monitors.jpg',
+  '/assets/img/upgrades/ergonomic-chairs.jpg',
+  '/assets/img/upgrades/gadgets.jpg',
+  '/assets/img/upgrades/audio-equipments.jpg',
   '/assets/ecommerce/products/skadis-pegboard.jpg',
   '/assets/ecommerce/products/sihoo-m59as.jpg',
   '/assets/ecommerce/products/green-lion-cooler.jpg',

@@ -1082,29 +1082,48 @@
   }
 
   function findProduct(id) {
-    return featuredProducts.get(id) || products.find(product => product.id === id);
+    const featured = featuredProducts.get(id);
+    const rawId = (id || '').replace(/^featured-/, '');
+    const catalogItem = products.find(p => p.id === id || p.id === rawId || (featured && p.title && featured.title && p.title.toLowerCase().includes(featured.title.toLowerCase().slice(0, 15))));
+    if (!featured) return catalogItem;
+    if (!catalogItem) return featured;
+    return {
+      ...catalogItem,
+      ...featured,
+      description: (featured.description && featured.description.length > 25) ? featured.description : (catalogItem.description || featured.description),
+      specs: (Array.isArray(featured.specs) && featured.specs.length > 0) ? featured.specs : (catalogItem.specs || featured.specs || [])
+    };
   }
 
   function bindFeaturedProductCards() {
     for (const card of document.querySelectorAll('[data-featured-product]')) {
       const id = card.dataset.featuredProduct;
       const name = card.querySelector('h3');
-      const priceLabel = card.querySelector('.upstore-current-price, .bh-dz-current-price').textContent.trim();
+      const priceLabel = card.querySelector('.upstore-current-price, .bh-dz-current-price')?.textContent?.trim() || '';
       const price = Number(priceLabel.replace(/[^\d.]/g, ''));
       const photo = card.querySelector('img');
+      const cardSub = card.querySelector('.upstore-card-sub')?.textContent?.trim() || '';
+      const desc = card.dataset.productDescription || (cardSub.length > 20 ? cardSub : '');
+      const rawFeatures = card.dataset.productFeatures;
+      const specs = rawFeatures ? rawFeatures.split('|').map(s => s.trim()).filter(Boolean) : (cardSub ? [cardSub] : []);
       featuredProducts.set(id, {
         id,
-        title: name.title || name.textContent.trim(),
+        title: name?.title || name?.textContent?.trim() || 'Product',
         price,
         priceLabel,
-        image: photo.src,
+        image: photo?.src || card.dataset.productImage || '',
         galleryLead: card.dataset.productImage,
-        images: card.dataset.productImages?.split('|'),
-        description: card.dataset.productDescription || card.querySelector('.upstore-card-sub')?.textContent?.trim(),
-        specs: card.dataset.productFeatures?.split('|'),
+        images: card.dataset.productImages ? card.dataset.productImages.split('|') : [],
+        description: desc,
+        specs,
         inquiryOnly: !priceLabel.endsWith('TZS') || !Number.isFinite(price) || price <= 0
       });
-      card.addEventListener('click', () => openModal(id));
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a') && !e.target.closest('a').getAttribute('href')) {
+          e.preventDefault();
+        }
+        openModal(id);
+      });
     }
   }
 

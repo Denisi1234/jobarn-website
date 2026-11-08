@@ -15,7 +15,7 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="about-jobarn pe-md-4">
                                 <a href="${route('index.html')}">
-                                    <img src="${route('assets/img/jobarn-logo.jpeg')}" alt="Jobarn General Trading Company LTD" style="height: 54px; width: auto; max-width: 220px; object-fit: contain; display: block; margin-bottom: 18px;">
+                                    <img loading="lazy" decoding="async" src="${route('assets/img/jobarn-logo.jpeg')}" alt="Jobarn General Trading Company LTD" style="height: 54px; width: auto; max-width: 220px; object-fit: contain; display: block; margin-bottom: 18px;">
                                 </a>
                                 <p>Jobarn General Trading Company Ltd is Tanzania's premier destination for enterprise technology, ergonomic workspaces, custom computers, and professional audiovisual gear.</p>
                             </div>
@@ -65,7 +65,7 @@
                                 <div class="get-in-touch">
                                     <div class="single-contact-info">
                                         <div class="icon id1">
-                                            <i class="fal fa-map-marker-alt"></i>
+                                            <i class="fa-solid fa-location-dot"></i>
                                         </div>
                                         <div class="contact-info">
                                             <span data-footer-address>SkyCity Mall, 1st Floor<br>Off Mlimani City, University Road<br>Dar es Salaam, Tanzania</span>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="single-contact-info">
                                         <div class="icon id2">
-                                            <i class="fal fa-phone"></i>
+                                            <i class="fa-solid fa-phone"></i>
                                         </div>
                                         <div class="contact-info">
                                             <a data-footer-phone href="tel:+255716026781" style="color:inherit; text-decoration:none;">0716 026 781</a>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="single-contact-info">
                                         <div class="icon id3">
-                                            <i class="fal fa-envelope"></i>
+                                            <i class="fa-solid fa-envelope"></i>
                                         </div>
                                         <div class="contact-info">
                                             <a data-footer-email href="mailto:info@jobarn.co.tz" style="color:inherit; text-decoration:none;">info@jobarn.co.tz</a>

@@ -9,7 +9,10 @@
     <link rel="canonical" href="https://jobarn.co.tz/">
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
-    <!-- Fonts & Font Awesome Icons -->
+    <link rel="preload" as="image" href="assets/img/hero-video-poster.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/img/jobarn-logo.jpeg" fetchpriority="high">
+
+    <!-- Fonts & Font Awesome Icons (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -29,12 +32,12 @@
         <div class="bh-container bh-top-row">
             <!-- Left: Mobile Menu Toggle & Logo & Expert Phone -->
             <div class="bh-logo-section">
-                <button type="button" class="bh-mobile-menu-toggle" id="bhMobileMenuToggle" aria-label="Open Navigation Menu">
-                    <i class="fa-solid fa-bars"></i>
+                <button type="button" class="bh-mobile-menu-toggle" id="bhMobileMenuToggle" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="bhMobileDrawer">
+                    <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2.2H3V6zm0 4.9h18v2.2H3v-2.2zm0 4.9h18V18H3v-2.2z"/></svg>
                 </button>
                 <a href="index.html" class="bh-brand-logo" title="Jobarn Store Tanzania">
                     <div class="bh-brand-box">
-                        <img src="assets/img/jobarn-logo.jpeg" alt="Jobarn Logo" class="bh-logo-img" onerror="this.onerror=null; this.parentElement.innerHTML='&lt;span class=&quot;bh-logo-fallback&quot;&gt;JOBARN&lt;/span&gt;';">
+                        <img src="assets/img/jobarn-logo.jpeg" alt="Jobarn Logo" class="bh-logo-img" fetchpriority="high" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='&lt;span class=&quot;bh-logo-fallback&quot;&gt;JOBARN&lt;/span&gt;';">
                     </div>
                 </a>
                 
@@ -52,7 +55,7 @@
                 <form class="bh-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
                     <input type="text" id="bhSearchInput" placeholder="Search desks, chairs, monitors, cameras, audio, CCTV..." autocomplete="off">
                     <button type="submit" class="bh-search-btn" aria-label="Search">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.07l4.24 4.24-1.42 1.42-4.24-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
                     </button>
                 </form>
             </div>
@@ -62,7 +65,7 @@
                 <!-- Deal Zone -->
                 <a href="collections/deals.html" class="bh-action-item bh-deal-zone" title="Deal Zone">
                     <div class="bh-deal-icon-wrap">
-                        <i class="fa-solid fa-crosshairs"></i>
+                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v3a7 7 0 0 1 7 7h3v2h-3a7 7 0 0 1-7 7v3h-2v-3a7 7 0 0 1-7-7H0v-2h3a7 7 0 0 1 7-7V2h2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
                     </div>
                     <div class="bh-action-text">
                         <span class="bh-deal-timer">Ends In <b id="countdownTimer">08:31:24</b></span>
@@ -73,7 +76,7 @@
                 <!-- Cart Button -->
                 <a class="bh-action-item bh-cart-btn" id="cartOpenBtn" href="cart.html" title="View Cart">
                     <div class="bh-cart-icon-wrap">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM3 2h2.2l.7 3H21l-1.9 8.2a2 2 0 0 1-2 1.6H8.3l-.5 2H19v2H6.5a1.5 1.5 0 0 1-1.46-1.85L6.1 14 4.2 5H2V3h1V2zm3.3 5l1.3 6h9.3l1.4-6H6.3z"/></svg>
                         <span class="bh-cart-count" id="cartBadge" style="display:none;">0</span>
                     </div>
                     <div class="bh-action-text">
@@ -164,25 +167,15 @@
     <section class="bh-hero-slider-section">
         <div class="bh-container">
             <div class="bh-hero-video-banner has-poster" id="heroVideoBanner" style="background-image: url('assets/img/hero-video-poster.jpg');">
-                <video class="bh-hero-plain-video" id="heroPlainVideo" autoplay loop muted playsinline preload="auto">
+                <video class="bh-hero-plain-video" id="heroPlainVideo" autoplay loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="auto" poster="assets/img/hero-video-poster.jpg">
                     <source src="assets/video/video_new_tumehama-web.mp4" type="video/mp4">
                 </video>
-                <script>
-                    (function () {
-                        var banner = document.getElementById('heroVideoBanner');
-                        var video = document.getElementById('heroPlainVideo');
-                        if (!banner || !video) return;
-                        function ready() { banner.classList.add('is-ready'); }
-                        if (video.readyState >= 3) { ready(); }
-                        else {
-                            video.addEventListener('playing', ready, { once: true });
-                            video.addEventListener('canplay', ready, { once: true });
-                            setTimeout(ready, 4000); /* safety fallback */
-                        }
-                    })();
-                </script>
-                <button class="bh-hero-video-mute-btn" id="heroVideoMuteBtn" type="button" aria-label="Toggle Sound">
-                    <i class="fa-solid fa-volume-xmark"></i>
+                <span class="bh-video-play-indicator" aria-hidden="true">
+                    <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+                <button class="bh-hero-video-mute-btn" id="heroVideoMuteBtn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                    <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                    <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                 </button>
             </div>
         </div>
@@ -196,7 +189,7 @@
                     <!-- 1. Photography -->
                     <a href="collections/photography.html" class="bh-dept-item" data-category="photography">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/photography.png" alt="Photography">
+                            <img decoding="async" src="assets/img/departments/photography.png" alt="Photography">
                         </div>
                         <span class="bh-dept-title">Photography</span>
                     </a>
@@ -204,7 +197,7 @@
                     <!-- 2. Computers -->
                     <a href="collections/computers.html" class="bh-dept-item" data-category="computers">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/computers.png" alt="Computers">
+                            <img decoding="async" src="assets/img/departments/computers.png" alt="Computers">
                         </div>
                         <span class="bh-dept-title">Computers</span>
                     </a>
@@ -212,7 +205,7 @@
                     <!-- 3. Pro Video -->
                     <a href="collections/pro-video.html" class="bh-dept-item" data-category="pro-video">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/pro-video.png" alt="Pro Video">
+                            <img decoding="async" src="assets/img/departments/pro-video.png" alt="Pro Video">
                         </div>
                         <span class="bh-dept-title">Pro Video</span>
                     </a>
@@ -220,7 +213,7 @@
                     <!-- 4. Lighting -->
                     <a href="collections/lighting.html" class="bh-dept-item" data-category="lighting">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/lighting.png" alt="Lighting">
+                            <img decoding="async" src="assets/img/departments/lighting.png" alt="Lighting">
                         </div>
                         <span class="bh-dept-title">Lighting</span>
                     </a>
@@ -228,7 +221,7 @@
                     <!-- 5. Pro Audio -->
                     <a href="collections/audio-equipments.html" class="bh-dept-item" data-category="audio">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/pro-audio.png" alt="Pro Audio">
+                            <img decoding="async" src="assets/img/departments/pro-audio.png" alt="Pro Audio">
                         </div>
                         <span class="bh-dept-title">Pro Audio</span>
                     </a>
@@ -236,7 +229,7 @@
                     <!-- 6. Drones -->
                     <a href="collections/drones.html" class="bh-dept-item" data-category="drones">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/drones.png" alt="Drones">
+                            <img decoding="async" src="assets/img/departments/drones.png" alt="Drones">
                         </div>
                         <span class="bh-dept-title">Drones</span>
                     </a>
@@ -244,7 +237,7 @@
                     <!-- 7. Camcorders -->
                     <a href="collections/camcorders.html" class="bh-dept-item" data-category="camcorders">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/camcorders.png" alt="Camcorders">
+                            <img decoding="async" src="assets/img/departments/camcorders.png" alt="Camcorders">
                         </div>
                         <span class="bh-dept-title">Camcorders</span>
                     </a>
@@ -252,7 +245,7 @@
                     <!-- 8. TVs & Entertainment -->
                     <a href="collections/monitors.html" class="bh-dept-item" data-category="monitors">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/tvs-entertainment.png" alt="TVs & Entertainment">
+                            <img decoding="async" src="assets/img/departments/tvs-entertainment.png" alt="TVs & Entertainment">
                         </div>
                         <span class="bh-dept-title">TVs &amp; Entertainment</span>
                     </a>
@@ -260,7 +253,7 @@
                     <!-- 9. Audio-Visual -->
                     <a href="collections/audio-visual.html" class="bh-dept-item" data-category="audio-visual">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/audio-visual.png" alt="Audio-Visual">
+                            <img decoding="async" src="assets/img/departments/audio-visual.png" alt="Audio-Visual">
                         </div>
                         <span class="bh-dept-title">Audio-Visual</span>
                     </a>
@@ -268,7 +261,7 @@
                     <!-- 10. Optics -->
                     <a href="collections/optics.html" class="bh-dept-item" data-category="optics">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/optics.png" alt="Optics">
+                            <img decoding="async" src="assets/img/departments/optics.png" alt="Optics">
                         </div>
                         <span class="bh-dept-title">Optics</span>
                     </a>
@@ -276,7 +269,7 @@
                     <!-- 11. Surveillance -->
                     <a href="collections/cctv-security.html" class="bh-dept-item" data-category="security">
                         <div class="bh-dept-img-wrap">
-                            <img loading="lazy" decoding="async" src="assets/img/departments/surveillance.png" alt="Surveillance">
+                            <img decoding="async" src="assets/img/departments/surveillance.png" alt="Surveillance">
                         </div>
                         <span class="bh-dept-title">Surveillance</span>
                     </a>
@@ -301,7 +294,7 @@
                     <!-- 1. Electric Ergonomic Desk 140cm -->
                 <div class="upstore-card" data-featured-product="featured-desk-140cm">
                     <div class="upstore-card-img-box">
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/desk-140cm.jpg" alt="Electric Ergonomic Desk 140cm">
+                        <img decoding="async" src="assets/ecommerce/products/desk-140cm.jpg" alt="Electric Ergonomic Desk 140cm">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="Electric Ergonomic Desk 140cm"><button type="button">Electric Ergonomic Desk 140cm</button></h3>
@@ -324,7 +317,7 @@
                 <!-- 2. Sihoo M59AS Ergonomic Chair -->
                 <div class="upstore-card" data-featured-product="featured-sihoo-m59as">
                     <div class="upstore-card-img-box">
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/sihoo-m59as.jpg" alt="Sihoo M59AS Ergonomic Chair">
+                        <img decoding="async" src="assets/ecommerce/products/sihoo-m59as.jpg" alt="Sihoo M59AS Ergonomic Chair">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="Sihoo M59AS Ergonomic Chair"><button type="button">Sihoo M59AS Ergonomic Chair</button></h3>
@@ -345,7 +338,7 @@
                 <!-- 3. IKEA, Skadis Pegboard with Accessories, Black -->
                 <div class="upstore-card" data-featured-product="featured-skadis-pegboard">
                     <div class="upstore-card-img-box">
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/skadis-pegboard.jpg" alt="IKEA, Skadis Pegboard with Accessories, Black">
+                        <img decoding="async" src="assets/ecommerce/products/skadis-pegboard.jpg" alt="IKEA, Skadis Pegboard with Accessories, Black">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="IKEA, Skadis Pegboard with Accessories, Black"><button type="button">IKEA, Skadis Pegboard with Accessories, Black</button></h3>
@@ -374,7 +367,7 @@
                     data-product-description="This bladeless air cooler combines HEPA filtration with adjustable airflow. Choose from ten speeds or a natural wind setting, and use the touch controls or remote to set the timer and oscillation. The tower sweeps through 80° to circulate air across the room."
                     data-product-features="HEPA 11 filtration|Ten speed levels and a natural wind setting|80° oscillation to spread airflow around the room|Programmable timer and remote control|45 W brushless motor">
                     <div class="upstore-card-img-box">
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/green-lion-cooler.jpg" alt="Green Lion Air Cooler with Air Purification">
+                        <img decoding="async" src="assets/ecommerce/products/green-lion-cooler.jpg" alt="Green Lion Air Cooler with Air Purification">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="Green Lion Air Cooler with Air Purification"><button type="button">Green Lion Air Cooler with Air Purification</button></h3>
@@ -391,7 +384,7 @@
                 <div class="upstore-card" data-featured-product="featured-powerology-robovac">
                     <div class="upstore-card-img-box">
                         <span class="upstore-badge-save">Save 13%</span>
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/powerology-robovac.jpg" alt="Powerology Smart Robovac Vacuum & Mop – Black">
+                        <img decoding="async" src="assets/ecommerce/products/powerology-robovac.jpg" alt="Powerology Smart Robovac Vacuum & Mop – Black">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="Powerology Smart Robovac Vacuum & Mop – Black"><button type="button">Powerology Smart Robovac Vacuum &amp; Mop – Black</button></h3>
@@ -406,7 +399,7 @@
                 <div class="upstore-card" data-featured-product="featured-shure-mv7">
                     <div class="upstore-card-img-box">
                         <span class="upstore-badge-save">Save 11%</span>
-                        <img loading="lazy" decoding="async" src="assets/ecommerce/products/shure-mv7.webp" alt="Shure MV7 Professional Microphone">
+                        <img decoding="async" src="assets/ecommerce/products/shure-mv7.webp" alt="Shure MV7 Professional Microphone">
                     </div>
                     <div class="upstore-card-info">
                         <h3 class="upstore-card-name" title="Shure MV7 Professional Microphone"><button type="button">Shure MV7 Professional Microphone</button></h3>
@@ -469,9 +462,9 @@
                 </a>
 
                 <!-- 4. Bottom Right: Custom PC Video Card -->
-                <a href="collections/computers.html" class="jobarn-upgrade-card jobarn-upgrade-card-pc">
-                    <video data-lazy-video preload="none" loop muted playsinline poster="assets/img/upgrades/custom-pc-poster.jpg">
-                        <source data-src="assets/img/upgrades/custom-pc-web.mp4" type="video/mp4">
+                <a href="collections/computers.html" class="jobarn-upgrade-card jobarn-upgrade-card-pc" style="background-image: url('assets/img/upgrades/custom-pc-poster.jpg');">
+                    <video loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/img/upgrades/custom-pc-poster.jpg">
+                        <source src="assets/img/upgrades/custom-pc-web.mp4" type="video/mp4">
                     </video>
                     <div class="jobarn-upgrade-card-content">
                         <h4 class="jobarn-card-pc-title">Build Your Own<br>Custom PC</h4>
@@ -488,7 +481,7 @@
                     <!-- Keyboards -->
                     <a href="collections/keyboards.html" class="jobarn-upgrades-cat-item">
                         <div class="jobarn-upgrades-cat-thumb">
-                            <img loading="lazy" decoding="async" src="assets/img/upgrades/keyboards.jpg" alt="Keyboards">
+                            <img decoding="async" src="assets/img/upgrades/keyboards.jpg" alt="Keyboards">
                         </div>
                         <span class="jobarn-upgrades-cat-title">Keyboards</span>
                     </a>
@@ -496,7 +489,7 @@
                     <!-- Monitors -->
                     <a href="collections/monitors.html" class="jobarn-upgrades-cat-item">
                         <div class="jobarn-upgrades-cat-thumb">
-                            <img loading="lazy" decoding="async" src="assets/img/upgrades/monitors.jpg" alt="Monitors">
+                            <img decoding="async" src="assets/img/upgrades/monitors.jpg" alt="Monitors">
                         </div>
                         <span class="jobarn-upgrades-cat-title">Monitors</span>
                     </a>
@@ -504,7 +497,7 @@
                     <!-- Ergonomic Chairs -->
                     <a href="collections/ergonomic-chairs.html" class="jobarn-upgrades-cat-item">
                         <div class="jobarn-upgrades-cat-thumb">
-                            <img loading="lazy" decoding="async" src="assets/img/upgrades/ergonomic-chairs.jpg" alt="Ergonomic Chairs">
+                            <img decoding="async" src="assets/img/upgrades/ergonomic-chairs.jpg" alt="Ergonomic Chairs">
                         </div>
                         <span class="jobarn-upgrades-cat-title">Ergonomic Chairs</span>
                     </a>
@@ -512,7 +505,7 @@
                     <!-- Gadgets -->
                     <a href="collections/gadgets.html" class="jobarn-upgrades-cat-item">
                         <div class="jobarn-upgrades-cat-thumb">
-                            <img loading="lazy" decoding="async" src="assets/img/upgrades/gadgets.jpg" alt="Gadgets">
+                            <img decoding="async" src="assets/img/upgrades/gadgets.jpg" alt="Gadgets">
                         </div>
                         <span class="jobarn-upgrades-cat-title">Gadgets</span>
                     </a>
@@ -520,7 +513,7 @@
                     <!-- Audio Equipments -->
                     <a href="collections/audio-equipments.html" class="jobarn-upgrades-cat-item">
                         <div class="jobarn-upgrades-cat-thumb">
-                            <img loading="lazy" decoding="async" src="assets/img/upgrades/audio-equipments.jpg" alt="Audio Equipments">
+                            <img decoding="async" src="assets/img/upgrades/audio-equipments.jpg" alt="Audio Equipments">
                         </div>
                         <span class="jobarn-upgrades-cat-title">Audio Equipments</span>
                     </a>
@@ -537,61 +530,85 @@
                 <div class="upstore-video-grid">
                     <!-- Reel 1: Modern Workspace Studio Setup -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/ecommerce/reels/reel-1.jpg">
                             <source src="assets/video/video1-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
 
                     <!-- Reel 2: Studio Lighting & Spotlight Rig -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/ecommerce/reels/reel-2.jpg">
                             <source src="assets/video/video2-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
 
                     <!-- Reel 3: Production Shoot & Showroom -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/ecommerce/reels/reel-3.jpg">
                             <source src="assets/video/video3-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
 
                     <!-- Reel 4: Studio Monitor Speakers & Unboxing -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/ecommerce/reels/reel-4.jpg">
                             <source src="assets/video/video4-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
 
                     <!-- Reel 5: Shure Podcast Microphone Unboxing -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/ecommerce/reels/reel-5.jpg">
                             <source src="assets/video/video5-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
 
                     <!-- Reel 6: Tumehama Jobarn Showroom & Store Reveal -->
                     <div class="upstore-video-card">
-                        <video class="upstore-video-elem" autoplay loop muted playsinline preload="auto">
+                        <video class="upstore-video-elem" loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="metadata" poster="assets/img/hero-video-poster.jpg">
                             <source src="assets/video/video_new_tumehama-web.mp4" type="video/mp4">
                         </video>
-                        <button class="upstore-video-mute-btn" type="button" aria-label="Toggle Audio">
-                            <i class="fa-solid fa-volume-xmark"></i>
+                        <span class="bh-video-play-indicator" aria-hidden="true">
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <button class="upstore-video-mute-btn" type="button" aria-label="Unmute video sound" aria-pressed="false">
+                            <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
+                            <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                         </button>
                     </div>
                 </div>
@@ -604,37 +621,7 @@
     <footer class="jobarn-site-footer" data-site-footer></footer>
 
     <!-- App Engine Script -->
-    <script src="assets/ecommerce/store-overlays.js"></script>
-    <script src="assets/ecommerce/ecommerce.js"></script>
-
-    <!-- Lazy video loader: download & play only when near the screen, pause when off-screen -->
-    <script>
-        (function () {
-            var vids = document.querySelectorAll('video[data-lazy-video]');
-            function load(v) {
-                if (v.dataset.loaded) return;
-                v.querySelectorAll('source[data-src]').forEach(function (s) { s.src = s.dataset.src; });
-                v.preload = 'auto';
-                v.load();
-                v.dataset.loaded = '1';
-            }
-            if (!('IntersectionObserver' in window)) {
-                vids.forEach(function (v) { load(v); v.play().catch(function () {}); });
-                return;
-            }
-            var io = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    var v = e.target;
-                    if (e.isIntersecting) {
-                        load(v);
-                        v.play().catch(function () {});
-                    } else if (v.dataset.loaded) {
-                        v.pause();
-                    }
-                });
-            }, { rootMargin: '300px 0px', threshold: 0.01 });
-            vids.forEach(function (v) { io.observe(v); });
-        })();
-    </script>
+    <script src="assets/ecommerce/store-overlays.js" defer></script>
+    <script src="assets/ecommerce/ecommerce.js" defer></script>
 </body>
 </html>

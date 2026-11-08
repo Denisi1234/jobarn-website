@@ -12,6 +12,7 @@
   const cartPage = document.querySelector('[data-cart-page]');
   const cartKey = 'jobarn_cart';
   const cartNoteKey = 'jobarn_cart_note';
+  const checkoutProfileKey = 'jobarn_checkout_profile';
   const featuredProducts = new Map();
   let products = [];
   let cart = readCart();
@@ -20,6 +21,14 @@
   let sortBy = collection ? 'title-asc' : 'featured';
   let currentSlide = 0;
   let slideInterval = null;
+  let deliveryMethod = 'ship';
+  let storeSettings = {
+    siteName: 'JOBARN',
+    contactEmail: 'info@jobarn.co.tz',
+    contactPhone: '+255 716-026-781',
+    contactAddress: 'SkyCity Mall, 1st Floor\nOff Mlimani City, University Road\nDar es Salaam, Tanzania',
+    whatsapp: '255716026781'
+  };
 
   function getCollectionFilters() {
     return document.getElementById('collectionFilters');
@@ -265,14 +274,21 @@
 
   async function loadSettings() {
     try {
-      const res = await fetch(settingsUrl, { cache: 'no-store' });
+      const res = await fetch(settingsUrl, { cache: 'no-cache' });
       if (!res.ok) return;
       const settings = await res.json();
       if (!settings || typeof settings !== 'object') return;
+      storeSettings = { ...storeSettings, ...settings };
 
       const waDigits = String(settings.whatsapp || '').replace(/[^\d]/g, '');
       if (waDigits) {
         WHATSAPP_NUMBER = waDigits;
+      }
+
+      if (cartPage && settings.contactAddress) {
+        document.querySelectorAll('.co-pickup-address').forEach(el => {
+          el.textContent = String(settings.contactAddress).replace(/\r?\n/g, ', ');
+        });
       }
 
       if (settings.contactPhone) {
@@ -308,7 +324,7 @@
     const heroContainer = document.querySelector('.bh-hero-slider-section .bh-container');
     if (!heroContainer) return;
     try {
-      const res = await fetch(slidesUrl, { cache: 'no-store' });
+      const res = await fetch(slidesUrl, { cache: 'no-cache' });
       if (!res.ok) return;
       const data = await res.json();
       if (!Array.isArray(data)) return;
@@ -422,7 +438,7 @@
 
   async function loadProducts() {
     try {
-      const res = await fetch(catalogUrl, { cache: 'no-store' });
+      const res = await fetch(catalogUrl, { cache: 'no-cache' });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -559,6 +575,8 @@
     }
   }
 
+  const inlinePlaceholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%23f8fafc'/%3E%3Cpath d='M75 88h90v76H75z' fill='none' stroke='%23cbd5e1' stroke-width='6'/%3E%3Cpath d='M75 110h90M120 88v22' stroke='%23cbd5e1' stroke-width='6'/%3E%3C/svg%3E";
+
   function renderCollectionCards(grid, filtered) {
     grid.setAttribute('aria-busy', 'false');
     if (filtered.length === 0) {
@@ -571,28 +589,43 @@
       return;
     }
 
-    grid.replaceChildren(...filtered.map(product => {
+    grid.replaceChildren(...filtered.map((product, index) => {
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'collection-card';
       const icons = { monitors: 'fa-desktop', chairs: 'fa-chair' };
       const placeholderIcon = icons[product.category] || 'fa-box';
       card.innerHTML = `
-        <span class="collection-card-image" aria-hidden="true"><i class="fal ${placeholderIcon}"></i></span>
+        <span class="collection-card-image" aria-hidden="true"><i class="fa-solid ${placeholderIcon}"></i></span>
         <span>
           <span class="collection-card-title"></span>
           <span class="collection-card-price"></span>
         </span>
       `;
+      const imgWrap = card.querySelector('.collection-card-image');
+      const placeholderEl = imgWrap.querySelector('i');
       if (product.image) {
+        placeholderEl.hidden = true;
+        imgWrap.classList.add('is-loading');
         const image = new Image();
         image.alt = product.title || '';
-        image.loading = 'lazy';
-        image.src = new URL(product.image, new URL('../../', catalogUrl)).href;
-        image.addEventListener('error', () => {
-          image.style.display = 'none';
+        image.loading = index < 4 ? 'eager' : 'lazy';
+        image.decoding = 'async';
+        image.addEventListener('load', () => {
+          imgWrap.classList.remove('is-loading');
+          placeholderEl.hidden = true;
         }, { once: true });
-        card.querySelector('.collection-card-image').append(image);
+        image.addEventListener('error', () => {
+          imgWrap.classList.remove('is-loading');
+          image.hidden = true;
+          image.style.display = 'none';
+          placeholderEl.hidden = false;
+        }, { once: true });
+        image.src = resolveAssetUrl(product.image) || product.image;
+        imgWrap.append(image);
+        if (image.complete && image.naturalWidth > 0) {
+          imgWrap.classList.remove('is-loading');
+        }
       }
       card.querySelector('.collection-card-title').textContent = product.title;
       card.querySelector('.collection-card-price').textContent = `${collectionPrice.format(product.price)} TZS`;
@@ -701,7 +734,7 @@
       return;
     }
 
-    grid.innerHTML = filtered.map(product => {
+    grid.innerHTML = filtered.map((product, index) => {
       const compareHtml = product.comparePrice && product.comparePrice > product.price 
         ? `<span class="bh-price-original">${formatTZS(product.comparePrice)}</span>` 
         : '';
@@ -711,12 +744,13 @@
 
       const ratingNum = product.rating || 4.8;
       const reviews = product.reviewsCount || Math.floor(Math.random() * 30 + 10);
+      const loadingAttr = index < 4 ? 'eager' : 'lazy';
 
       return `
         <div class="bh-product-card" data-id="${product.id}">
           ${badgeHtml}
           <div class="bh-card-img-wrap">
-            <img src="${resolveAssetUrl(product.image) || product.image}" alt="${product.title}" loading="lazy" onerror="this.src='https://placehold.co/400x400?text=Jobarn'">
+            <img src="${resolveAssetUrl(product.image) || product.image}" alt="${product.title}" loading="${loadingAttr}" decoding="async" onerror="this.onerror=null;this.src='${inlinePlaceholderSvg}'">
           </div>
           <div class="bh-card-info">
             <span class="bh-card-cat">${product.categoryName || product.category}</span>
@@ -767,9 +801,98 @@
     localStorage.setItem(cartKey, JSON.stringify(cart));
     if (cart.length === 0) {
       localStorage.removeItem(cartNoteKey);
-      if (cartPage) document.getElementById('cartNote').value = '';
+      if (cartPage) {
+        const cartNoteEl = document.getElementById('cartNote');
+        const coNotesEl = document.getElementById('coNotes');
+        if (cartNoteEl) cartNoteEl.value = '';
+        if (coNotesEl) coNotesEl.value = '';
+      }
     }
     updateCartUI();
+  }
+
+  function formatCheckoutPrice(amount) {
+    return 'TSh ' + collectionPrice.format(Number(amount) || 0);
+  }
+
+  function renderCheckoutSummary() {
+    const container = document.getElementById('checkoutSummaryItems');
+    if (!container) return;
+
+    let subtotal = 0;
+    const itemNodes = cart.map(item => {
+      const lineTotal = item.price * item.quantity;
+      subtotal += lineTotal;
+
+      const row = document.createElement('div');
+      row.className = 'co-summary-item';
+
+      const thumbWrap = document.createElement('div');
+      thumbWrap.className = 'co-summary-thumb';
+      if (item.image) {
+        const img = document.createElement('img');
+        img.src = resolveAssetUrl(item.image) || item.image;
+        img.alt = item.title;
+        img.onerror = () => { img.style.display = 'none'; };
+        thumbWrap.appendChild(img);
+      } else {
+        const fallback = document.createElement('i');
+        fallback.className = 'fas fa-box';
+        thumbWrap.appendChild(fallback);
+      }
+      const qtyBadge = document.createElement('span');
+      qtyBadge.className = 'co-summary-qty';
+      qtyBadge.textContent = String(item.quantity);
+      thumbWrap.appendChild(qtyBadge);
+
+      const info = document.createElement('div');
+      info.className = 'co-summary-item-info';
+      const titleEl = document.createElement('div');
+      titleEl.className = 'co-summary-item-title';
+      titleEl.textContent = item.title;
+      const unitEl = document.createElement('div');
+      unitEl.className = 'co-summary-item-unit';
+      unitEl.textContent = `${item.quantity} × ${formatTZS(item.price)}`;
+      info.append(titleEl, unitEl);
+
+      const priceEl = document.createElement('div');
+      priceEl.className = 'co-summary-item-price';
+      priceEl.textContent = formatCheckoutPrice(lineTotal);
+
+      row.append(thumbWrap, info, priceEl);
+      return row;
+    });
+
+    container.replaceChildren(...itemNodes);
+
+    const subtotalEl = document.getElementById('coSummarySubtotal');
+    const shippingEl = document.getElementById('coSummaryShipping');
+    const totalEl = document.getElementById('coSummaryTotal');
+    if (subtotalEl) subtotalEl.textContent = formatCheckoutPrice(subtotal);
+    if (shippingEl) {
+      shippingEl.textContent = deliveryMethod === 'pickup' ? 'FREE (Showroom Pickup)' : 'Confirmed on quote';
+    }
+    if (totalEl) totalEl.textContent = formatCheckoutPrice(subtotal);
+  }
+
+  function showCartView(step) {
+    const cartStep = document.getElementById('cartStepView');
+    const checkoutStep = document.getElementById('checkoutStepView');
+    if (!cartStep || !checkoutStep) return;
+
+    const goCheckout = step === 'checkout' && cart.length > 0;
+    cartStep.hidden = goCheckout;
+    checkoutStep.hidden = !goCheckout;
+
+    if (goCheckout) {
+      renderCheckoutSummary();
+      if (window.location.hash !== '#checkout') {
+        history.replaceState(null, '', '#checkout');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (window.location.hash === '#checkout') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
   }
 
   function updateCartUI() {
@@ -810,10 +933,17 @@
     });
 
     items.replaceChildren(...rows);
+    document.body?.classList?.toggle('has-cart-items', rows.length > 0);
     document.getElementById('cartEmpty').hidden = rows.length > 0;
     document.getElementById('cartTable').hidden = rows.length === 0;
     document.getElementById('cartSummary').hidden = rows.length === 0;
     document.getElementById('cartTotal').textContent = formatCartPrice(total);
+
+    if (rows.length === 0) {
+      showCartView('cart');
+    } else {
+      renderCheckoutSummary();
+    }
 
     if (activeId) {
       const row = rows.find(item => item.dataset.productId === activeId);
@@ -822,11 +952,72 @@
     }
   }
 
+  function setDeliveryTab(mode) {
+    deliveryMethod = mode === 'pickup' ? 'pickup' : 'ship';
+    document.querySelectorAll('[data-delivery-tab]').forEach(tab => {
+      const active = tab.dataset.deliveryTab === deliveryMethod;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    const shipFields = document.getElementById('coShipFields');
+    const pickupInfo = document.getElementById('coPickupInfo');
+    if (shipFields) shipFields.hidden = deliveryMethod === 'pickup';
+    if (pickupInfo) pickupInfo.hidden = deliveryMethod !== 'pickup';
+    renderCheckoutSummary();
+  }
+
   function setupCartPage() {
     const note = document.getElementById('cartNote');
-    note.value = localStorage.getItem(cartNoteKey) || '';
-    note.addEventListener('input', () => localStorage.setItem(cartNoteKey, note.value));
-    document.getElementById('whatsappCheckoutBtn').addEventListener('click', checkoutWhatsApp);
+    const coNotes = document.getElementById('coNotes');
+    const savedNote = localStorage.getItem(cartNoteKey) || '';
+    if (note) note.value = savedNote;
+    if (coNotes) coNotes.value = savedNote;
+
+    note?.addEventListener('input', () => {
+      localStorage.setItem(cartNoteKey, note.value);
+      if (coNotes) coNotes.value = note.value;
+    });
+    coNotes?.addEventListener('input', () => {
+      localStorage.setItem(cartNoteKey, coNotes.value);
+      if (note) note.value = coNotes.value;
+    });
+
+    // Restore saved checkout contact profile if previously saved
+    try {
+      const savedProfile = JSON.parse(localStorage.getItem(checkoutProfileKey) || 'null');
+      if (savedProfile && typeof savedProfile === 'object') {
+        const nameEl = document.getElementById('coName');
+        if (nameEl && (savedProfile.fullName || savedProfile.lastName || savedProfile.firstName)) {
+          nameEl.value = savedProfile.fullName || [savedProfile.firstName, savedProfile.lastName].filter(Boolean).join(' ');
+        }
+        if (savedProfile.phone) document.getElementById('coPhone').value = savedProfile.phone;
+        if (savedProfile.email) document.getElementById('coEmail').value = savedProfile.email;
+        if (savedProfile.company) document.getElementById('coCompany').value = savedProfile.company;
+        if (savedProfile.address) document.getElementById('coAddress').value = savedProfile.address;
+        if (savedProfile.city) document.getElementById('coCity').value = savedProfile.city;
+        if (savedProfile.deliveryMethod) setDeliveryTab(savedProfile.deliveryMethod);
+      }
+    } catch {
+      // ignore corrupted profile
+    }
+
+    document.querySelectorAll('[data-delivery-tab]').forEach(tab => {
+      tab.addEventListener('click', () => setDeliveryTab(tab.dataset.deliveryTab));
+    });
+
+    document.getElementById('proceedCheckoutBtn')?.addEventListener('click', () => {
+      if (readCart().length === 0) return;
+      showCartView('checkout');
+    });
+    document.getElementById('backToCartBtn')?.addEventListener('click', () => showCartView('cart'));
+
+    document.getElementById('checkoutForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      checkoutWhatsApp();
+    });
+    document.getElementById('printQuoteBtn')?.addEventListener('click', printProformaQuotation);
+    window.addEventListener('beforeprint', preparePrintableQuote);
+
     document.getElementById('cartItems').addEventListener('click', event => {
       const button = event.target.closest('[data-cart-action]');
       if (!button) return;
@@ -837,6 +1028,10 @@
         updateQty(id, button.dataset.cartAction === 'increase' ? 1 : -1);
       }
     });
+
+    if (window.location.hash === '#checkout' && cart.length > 0) {
+      showCartView('checkout');
+    }
   }
 
   function addToCart(id) {
@@ -1015,31 +1210,256 @@
     if (modal?.open) modal.close();
   }
 
+  function generateQuoteRef() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    const rand = String(Math.floor(1000 + Math.random() * 9000));
+    return `JB-${y}${m}${d}-${rand}`;
+  }
+
+  function readCheckoutInputs() {
+    return {
+      fullName: document.getElementById('coName')?.value.trim() || '',
+      phone: document.getElementById('coPhone')?.value.trim() || '',
+      email: document.getElementById('coEmail')?.value.trim() || '',
+      company: document.getElementById('coCompany')?.value.trim() || '',
+      deliveryMethod,
+      address: document.getElementById('coAddress')?.value.trim() || '',
+      city: document.getElementById('coCity')?.value.trim() || '',
+      notes: document.getElementById('coNotes')?.value.trim() || document.getElementById('cartNote')?.value.trim() || ''
+    };
+  }
+
+  function validateCheckoutForm() {
+    const form = document.getElementById('checkoutForm');
+    const errorBox = document.getElementById('coFormError');
+    if (!form) return null;
+
+    form.querySelectorAll('.co-input.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    if (errorBox) {
+      errorBox.hidden = true;
+      errorBox.textContent = '';
+    }
+
+    const nameEl = document.getElementById('coName');
+    const phoneEl = document.getElementById('coPhone');
+    const emailEl = document.getElementById('coEmail');
+    const addressEl = document.getElementById('coAddress');
+    const cityEl = document.getElementById('coCity');
+    const saveEl = document.getElementById('coSaveInfo');
+
+    const profile = readCheckoutInputs();
+    const phoneDigits = profile.phone.replace(/[^\d]/g, '');
+
+    const fail = (el, msg) => {
+      if (el) {
+        el.classList.add('is-invalid');
+        el.focus();
+      }
+      if (errorBox) {
+        errorBox.textContent = msg;
+        errorBox.hidden = false;
+      }
+      return null;
+    };
+
+    if (!profile.fullName) {
+      return fail(nameEl, 'Please enter your name.');
+    }
+    if (phoneDigits.length < 6) {
+      return fail(phoneEl, 'Please enter a valid Phone or WhatsApp number.');
+    }
+    if (profile.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) {
+      return fail(emailEl, 'Please enter a valid email address or leave it blank.');
+    }
+    if (deliveryMethod === 'ship') {
+      if (!profile.address) {
+        return fail(addressEl, 'Please enter your delivery street or area.');
+      }
+      if (!profile.city) {
+        return fail(cityEl, 'Please enter your delivery city or region.');
+      }
+    }
+
+    if (saveEl?.checked) {
+      localStorage.setItem(checkoutProfileKey, JSON.stringify(profile));
+    } else {
+      localStorage.removeItem(checkoutProfileKey);
+    }
+
+    return profile;
+  }
+
+  function buildQuotationPayload(info) {
+    const quoteRef = generateQuoteRef();
+    const dateStr = new Date().toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    const showroomAddress = String(storeSettings.contactAddress || '').replace(/\r?\n/g, ', ') || 'SkyCity Mall, 1st Floor, Dar es Salaam';
+    const destinationText = info.deliveryMethod === 'pickup'
+      ? `Showroom Pickup — ${showroomAddress}`
+      : [info.address, info.city].filter(Boolean).join(', ');
+    const shippingLabel = info.deliveryMethod === 'pickup'
+      ? 'FREE (Showroom Pickup)'
+      : 'To be confirmed';
+
+    let subtotal = 0;
+    let lines = '';
+    cart.forEach((item, index) => {
+      const itemTot = item.price * item.quantity;
+      subtotal += itemTot;
+      lines += `${index + 1}. *${item.title}*\n`;
+      lines += `   • Qty: ${item.quantity} × ${formatTZS(item.price)}\n`;
+      lines += `   • Line Total: *${formatTZS(itemTot)}*\n\n`;
+    });
+
+    let message = `*JOBARN GENERAL TRADING COMPANY LTD*\n`;
+    message += `_Official Proforma Quotation Request_\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `*Quote Ref:* ${quoteRef}\n`;
+    message += `*Date:* ${dateStr}\n\n`;
+    message += `*CLIENT DETAILS*\n`;
+    message += `• *Client:* ${info.fullName}\n`;
+    if (info.company) message += `• *Company:* ${info.company}\n`;
+    message += `• *Phone:* ${info.phone}\n`;
+    if (info.email) message += `• *Email:* ${info.email}\n`;
+    message += `• *Fulfillment:* ${info.deliveryMethod === 'pickup' ? 'Showroom Pickup' : 'Delivery'}\n`;
+    message += `• *Location:* ${destinationText}\n`;
+    message += `\n*QUOTATION ITEMS*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += lines;
+    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `*Subtotal:* ${formatTZS(subtotal)}\n`;
+    message += `*Delivery:* ${shippingLabel}\n`;
+    message += `*ESTIMATED TOTAL:* *${formatTZS(subtotal)}*\n`;
+    if (info.notes) {
+      message += `\n*Notes:*\n${info.notes}\n`;
+    }
+    message += `\n_Valid for 7 days | ${showroomAddress}_`;
+
+    return { quoteRef, dateStr, destinationText, shippingLabel, subtotal, message };
+  }
+
+  function showCheckoutStatus(text) {
+    const status = document.getElementById('coActionStatus');
+    if (!status) return;
+    status.textContent = text;
+    status.hidden = false;
+  }
+
+  function populatePrintableQuote(info, payload) {
+    document.getElementById('pqQuoteRef').textContent = payload.quoteRef;
+    document.getElementById('pqQuoteDate').textContent = payload.dateStr;
+    document.getElementById('pqCompanyAddress').textContent =
+      String(storeSettings.contactAddress || '').replace(/\r?\n/g, ', ') || 'SkyCity Mall, 1st Floor, Dar es Salaam';
+    document.getElementById('pqCompanyContact').textContent =
+      `${storeSettings.contactPhone || '+255 716-026-781'} • ${storeSettings.contactEmail || 'info@jobarn.co.tz'}`;
+
+    document.getElementById('pqClientName').textContent = info.fullName || 'Walk-in Client';
+    const compEl = document.getElementById('pqClientCompany');
+    compEl.textContent = info.company || '';
+    compEl.hidden = !info.company;
+    const contactText = [info.phone, info.email].filter(Boolean).join(' • ');
+    const contactEl = document.getElementById('pqClientContact');
+    contactEl.textContent = contactText || 'Contact to be confirmed';
+    document.getElementById('pqFulfillment').textContent =
+      info.deliveryMethod === 'pickup' ? 'Showroom Pickup (FREE)' : 'Delivery (To be confirmed)';
+    document.getElementById('pqClientAddress').textContent = payload.destinationText || 'To be confirmed';
+
+    const tbody = document.getElementById('pqItemsBody');
+    tbody.replaceChildren(...cart.map((item, idx) => {
+      const tr = document.createElement('tr');
+      const cells = [
+        { text: String(idx + 1), cls: '' },
+        { text: item.title, cls: '' },
+        { text: String(item.quantity), cls: 'num' },
+        { text: collectionPrice.format(item.price), cls: 'num' },
+        { text: collectionPrice.format(item.price * item.quantity), cls: 'num' }
+      ];
+      cells.forEach(c => {
+        const td = document.createElement('td');
+        if (c.cls) td.className = c.cls;
+        td.textContent = c.text;
+        tr.appendChild(td);
+      });
+      return tr;
+    }));
+
+    document.getElementById('pqNotesText').textContent = info.notes || 'None';
+    document.getElementById('pqSubtotal').textContent = formatTZS(payload.subtotal);
+    document.getElementById('pqShippingNote').textContent = payload.shippingLabel;
+    document.getElementById('pqGrandTotal').textContent = formatTZS(payload.subtotal);
+  }
+
+  function preparePrintableQuote() {
+    cart = readCart();
+    if (cart.length === 0) return null;
+    document.body?.classList?.add('has-cart-items');
+
+    const raw = readCheckoutInputs();
+    const info = {
+      ...raw,
+      fullName: raw.fullName || 'Valued Client',
+      address: raw.address || (raw.deliveryMethod === 'ship' ? 'Delivery address pending' : ''),
+      city: raw.city || 'Dar es Salaam'
+    };
+
+    const payload = buildQuotationPayload(info);
+    populatePrintableQuote(info, payload);
+    return payload;
+  }
+
+  function printProformaQuotation() {
+    const payload = preparePrintableQuote();
+    if (!payload) return;
+    const errorBox = document.getElementById('coFormError');
+    if (errorBox) errorBox.hidden = true;
+    showCheckoutStatus(`Preparing print / PDF for Quotation ${payload.quoteRef}...`);
+    window.focus?.();
+    window.print();
+  }
+
   function checkoutWhatsApp() {
     cart = readCart();
     if (cart.length === 0) {
-      alert('Your cart is empty! Please add products before checking out.');
+      showCartView('cart');
+      return;
+    }
+
+    // Require basic checkout details on cart page before launching WhatsApp
+    if (cartPage && document.getElementById('checkoutStepView')) {
+      if (document.getElementById('checkoutStepView').hidden) {
+        showCartView('checkout');
+        return;
+      }
+      const info = validateCheckoutForm();
+      if (!info) return;
+      const payload = buildQuotationPayload(info);
+      showCheckoutStatus(`Opening WhatsApp with Quotation ${payload.quoteRef}...`);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(payload.message)}`;
+      window.open(url, '_blank', 'noopener');
       return;
     }
 
     let subtotal = 0;
-    let message = `🛒 *NEW JOBARN ORDER REQUEST*\n`;
-    message += `────────────────────\n`;
-    
+    let message = `*JOBARN GENERAL TRADING COMPANY LTD*\n`;
+    message += `_Official Quotation Request_\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
     cart.forEach((item, index) => {
       const itemTot = item.price * item.quantity;
       subtotal += itemTot;
       message += `${index + 1}. *${item.title}*\n`;
-      message += `   Qty: ${item.quantity} × ${formatTZS(item.price)} = ${formatTZS(itemTot)}\n\n`;
+      message += `   • Qty: ${item.quantity} × ${formatTZS(item.price)} = *${formatTZS(itemTot)}*\n\n`;
     });
-
-    message += `────────────────────\n`;
-    message += `💰 *Subtotal:* ${formatTZS(subtotal)}\n`;
-    message += `🚚 *Delivery Request:* Dar es Salaam / Tanzania Delivery\n`;
-    message += `📍 *Order Destination:* (Please reply with your location)\n\n`;
-    const instructions = document.getElementById('cartNote')?.value.trim();
-    if (instructions) message += `Order special instructions\n${instructions}\n\n`;
-    message += '_Sent via Jobarn Store_';
+    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `*Subtotal:* ${formatTZS(subtotal)}\n`;
+    message += `_Sent via jobarn.co.tz_`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank', 'noopener');
@@ -1149,7 +1569,13 @@
 
   function refreshCart() {
     cart = readCart();
-    if (cartPage) document.getElementById('cartNote').value = localStorage.getItem(cartNoteKey) || '';
+    if (cartPage) {
+      const saved = localStorage.getItem(cartNoteKey) || '';
+      const cartNoteEl = document.getElementById('cartNote');
+      const coNotesEl = document.getElementById('coNotes');
+      if (cartNoteEl) cartNoteEl.value = saved;
+      if (coNotesEl) coNotesEl.value = saved;
+    }
     updateCartUI();
   }
 
@@ -1238,58 +1664,8 @@
       }
     });
 
-    // Initialize video showcase audio toggle & click-to-play
-    document.querySelectorAll('.upstore-video-card').forEach(card => {
-      const video = card.querySelector('video');
-      const muteBtn = card.querySelector('.upstore-video-mute-btn');
-      if (!video) return;
-
-      // Ensure autoplay starts smoothly
-      video.play().catch(() => {});
-
-      if (muteBtn) {
-        muteBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          video.muted = !video.muted;
-          const icon = muteBtn.querySelector('i');
-          if (icon) {
-            icon.className = video.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
-          }
-        });
-      }
-
-      card.addEventListener('click', () => {
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
-      });
-    });
-
-    // Initialize Hero plain video banner
-    const heroBannerVideo = document.querySelector('.bh-hero-plain-video');
-    const heroBannerMuteBtn = document.getElementById('heroVideoMuteBtn');
-    if (heroBannerVideo) {
-      heroBannerVideo.play().catch(() => {});
-      if (heroBannerMuteBtn) {
-        heroBannerMuteBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          heroBannerVideo.muted = !heroBannerVideo.muted;
-          const icon = heroBannerMuteBtn.querySelector('i');
-          if (icon) {
-            icon.className = heroBannerVideo.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
-          }
-        });
-      }
-      heroBannerVideo.parentElement?.addEventListener('click', () => {
-        if (heroBannerVideo.paused) {
-          heroBannerVideo.play();
-        } else {
-          heroBannerVideo.pause();
-        }
-      });
-    }
+    // Unified mobile-safe video manager (hero banner, upgrade PC video & footer reels)
+    initStorefrontVideos();
 
     // Initialize Mobile Navigation Drawer
     const mobileToggleBtn = document.getElementById('bhMobileMenuToggle');
@@ -1300,18 +1676,25 @@
     function openMobileDrawer() {
       mobileDrawer?.classList.add('active');
       mobileOverlay?.classList.add('active');
+      mobileToggleBtn?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMobileDrawer() {
       mobileDrawer?.classList.remove('active');
       mobileOverlay?.classList.remove('active');
+      mobileToggleBtn?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
 
     mobileToggleBtn?.addEventListener('click', openMobileDrawer);
     mobileCloseBtn?.addEventListener('click', closeMobileDrawer);
     mobileOverlay?.addEventListener('click', closeMobileDrawer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileDrawer?.classList.contains('active')) {
+        closeMobileDrawer();
+      }
+    });
 
     // Modal close
     document.getElementById('productModalCloseBtn')?.addEventListener('click', closeModal);
@@ -1319,5 +1702,350 @@
       if (e.target.id === 'productModalOverlay') closeModal();
     });
   });
+
+  function initStorefrontVideos() {
+    const isCompactViewport = () => typeof window.matchMedia === 'function'
+      && window.matchMedia('(max-width: 900px)').matches;
+
+    function getVideoContainer(video) {
+      return video?.closest('.upstore-video-card, #heroVideoBanner, .bh-hero-video-banner, .jobarn-upgrade-card-pc') || video?.parentElement || null;
+    }
+
+    function getMuteButton(video) {
+      const container = getVideoContainer(video);
+      if (!container) return null;
+      return container.querySelector('#heroVideoMuteBtn, .bh-hero-video-mute-btn, .upstore-video-mute-btn');
+    }
+
+    function ensureVideoLoaded(video) {
+      if (!video) return;
+      let attached = false;
+      video.querySelectorAll('source[data-src]').forEach(source => {
+        if (source.dataset.src && !source.getAttribute('src')) {
+          source.src = source.dataset.src;
+          attached = true;
+        }
+      });
+      if (video.dataset.src && !video.getAttribute('src')) {
+        video.src = video.dataset.src;
+        attached = true;
+      }
+      if (video.preload !== 'auto') {
+        video.preload = 'auto';
+      }
+      video.dataset.loaded = '1';
+      if (attached && typeof video.load === 'function') {
+        try {
+          video.load();
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    function syncVideoUi(video) {
+      if (!video) return;
+      const container = getVideoContainer(video);
+      const isPlaying = !video.paused && !video.ended;
+      const isReady = video.readyState >= 2 || isPlaying;
+      if (container) {
+        container.classList.toggle('is-playing', isPlaying);
+        if (isReady) container.classList.add('is-ready');
+      }
+      const muteBtn = getMuteButton(video);
+      if (muteBtn) {
+        const isMuted = Boolean(video.muted);
+        muteBtn.classList.toggle('is-unmuted', !isMuted);
+        muteBtn.setAttribute('aria-pressed', isMuted ? 'false' : 'true');
+        muteBtn.setAttribute('aria-label', isMuted ? 'Unmute video sound' : 'Mute video sound');
+        const icon = muteBtn.querySelector('i');
+        if (icon) {
+          icon.className = isMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+        }
+      }
+    }
+
+    function muteAllOtherVideos(activeVideo) {
+      document.querySelectorAll('video').forEach(other => {
+        if (other === activeVideo) return;
+        other.muted = true;
+        other.defaultMuted = true;
+        other.setAttribute('muted', '');
+        delete other.dataset.userUnmuted;
+        syncVideoUi(other);
+      });
+    }
+
+    function attemptPlay(video) {
+      if (!video) return;
+      ensureVideoLoaded(video);
+      syncVideoUi(video);
+      const playPromise = typeof video.play === 'function' ? video.play() : null;
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => {
+          syncVideoUi(video);
+        }).catch(err => {
+          if (err && err.name === 'NotAllowedError' && !video.muted) {
+            video.muted = true;
+            video.defaultMuted = true;
+            video.setAttribute('muted', '');
+            delete video.dataset.userUnmuted;
+            syncVideoUi(video);
+            if (typeof video.play === 'function') {
+              video.play().then(() => syncVideoUi(video)).catch(() => {});
+            }
+          } else if (video.dataset.userUnmuted === '1' && !video.dataset.userPaused) {
+            video.addEventListener('canplay', () => {
+              if (video.dataset.userUnmuted === '1' && video.paused && !video.dataset.userPaused) {
+                video.muted = false;
+                video.defaultMuted = false;
+                video.removeAttribute('muted');
+                video.volume = 1;
+                if (typeof video.play === 'function') {
+                  video.play().then(() => syncVideoUi(video)).catch(() => {});
+                }
+              }
+            }, { once: true });
+            syncVideoUi(video);
+          } else {
+            syncVideoUi(video);
+          }
+        });
+      }
+    }
+
+    function toggleVideoSound(video, event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (!video) return;
+      ensureVideoLoaded(video);
+      const shouldUnmute = video.muted || video.paused || video.ended;
+      if (shouldUnmute) {
+        muteAllOtherVideos(video);
+        video.defaultMuted = false;
+        video.removeAttribute('muted');
+        video.muted = false;
+        video.volume = 1;
+        video.dataset.userUnmuted = '1';
+        delete video.dataset.userPaused;
+        syncVideoUi(video);
+        if (video.paused || video.ended) {
+          attemptPlay(video);
+        }
+      } else {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.setAttribute('muted', '');
+        delete video.dataset.userUnmuted;
+        syncVideoUi(video);
+      }
+    }
+
+    function toggleContainerPlayback(video) {
+      if (!video) return;
+      ensureVideoLoaded(video);
+      if (video.paused || video.ended) {
+        delete video.dataset.userPaused;
+        attemptPlay(video);
+      } else {
+        video.dataset.userPaused = '1';
+        video.pause();
+        syncVideoUi(video);
+      }
+    }
+
+    function attachVideoLifecycle(video) {
+      if (!video || video.dataset.lifecycleBound === '1') return;
+      video.dataset.lifecycleBound = '1';
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', 'true');
+      video.setAttribute('x5-playsinline', 'true');
+      ['play', 'playing', 'pause', 'ended', 'loadeddata', 'canplay', 'volumechange'].forEach(evt => {
+        video.addEventListener(evt, () => syncVideoUi(video));
+      });
+      syncVideoUi(video);
+    }
+
+    // 1. Hero plain video banner
+    const heroBannerVideo = document.getElementById('heroPlainVideo') || document.querySelector('.bh-hero-plain-video');
+    const heroBannerEl = document.getElementById('heroVideoBanner') || heroBannerVideo?.parentElement;
+    const heroBannerMuteBtn = document.getElementById('heroVideoMuteBtn');
+    let heroVisible = true;
+
+    if (heroBannerVideo) {
+      attachVideoLifecycle(heroBannerVideo);
+
+      if (heroBannerMuteBtn) {
+        heroBannerMuteBtn.addEventListener('click', (e) => toggleVideoSound(heroBannerVideo, e));
+      }
+
+      heroBannerEl?.addEventListener('click', (e) => {
+        if (e.target.closest('#heroVideoMuteBtn, .bh-hero-video-mute-btn')) return;
+        toggleContainerPlayback(heroBannerVideo);
+      });
+
+      const tryAutoStartHero = () => {
+        if (!heroVisible || heroBannerVideo.dataset.userPaused === '1') return;
+        if (heroBannerEl && heroBannerEl.style.display === 'none') return;
+        attemptPlay(heroBannerVideo);
+      };
+
+      // Give above-the-fold images (poster, logo, department icons) a short head start
+      setTimeout(tryAutoStartHero, 250);
+
+      if ('IntersectionObserver' in window && heroBannerEl) {
+        const heroObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            heroVisible = entry.isIntersecting;
+            if (entry.isIntersecting) {
+              if (!heroBannerVideo.dataset.userPaused && heroBannerEl.style.display !== 'none') {
+                attemptPlay(heroBannerVideo);
+              }
+            } else if (!heroBannerVideo.paused) {
+              heroBannerVideo.pause();
+              syncVideoUi(heroBannerVideo);
+            }
+          });
+        }, { threshold: 0.05 });
+        heroObserver.observe(heroBannerEl);
+      }
+    }
+
+    // 2. Upgrades bento "Build Your Own Custom PC" muted ambient video
+    const customPcCard = document.querySelector('.jobarn-upgrade-card-pc');
+    const customPcVideo = customPcCard?.querySelector('video');
+    if (customPcVideo) {
+      attachVideoLifecycle(customPcVideo);
+      if ('IntersectionObserver' in window) {
+        const pcObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              attemptPlay(customPcVideo);
+            } else if (!customPcVideo.paused) {
+              customPcVideo.pause();
+            }
+          });
+        }, { rootMargin: '80px 0px', threshold: 0.05 });
+        pcObserver.observe(customPcCard);
+      } else {
+        attemptPlay(customPcVideo);
+      }
+    }
+
+    // 3. Footer Video Showcase & Reels Strip
+    const reelsSection = document.querySelector('.upstore-video-section');
+    const reelsWrap = document.querySelector('.upstore-video-scroll-wrap');
+    const reelCards = Array.from(document.querySelectorAll('.upstore-video-card'));
+    const reelItems = reelCards.map(card => {
+      const video = card.querySelector('video');
+      const muteBtn = card.querySelector('.upstore-video-mute-btn');
+      if (!video) return null;
+      attachVideoLifecycle(video);
+      if (muteBtn) {
+        muteBtn.addEventListener('click', (e) => toggleVideoSound(video, e));
+      }
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.upstore-video-mute-btn')) return;
+        toggleContainerPlayback(video);
+      });
+      return { card, video };
+    }).filter(Boolean);
+
+    if (reelItems.length > 0) {
+      let reelsSectionVisible = !('IntersectionObserver' in window);
+      let scrollTimer = null;
+
+      const updateReelsPlayback = () => {
+        if (!reelsSectionVisible) {
+          reelItems.forEach(({ video }) => {
+            if (!video.paused) {
+              video.pause();
+              syncVideoUi(video);
+            }
+          });
+          return;
+        }
+
+        const wrapRect = reelsWrap?.getBoundingClientRect();
+        const viewportW = window.innerWidth || document.documentElement.clientWidth || 1024;
+        const leftBound = wrapRect ? Math.max(0, wrapRect.left) : 0;
+        const rightBound = wrapRect ? Math.min(viewportW, wrapRect.right) : viewportW;
+
+        const maxActive = isCompactViewport() ? 2 : reelItems.length;
+        const scored = reelItems.map((item, idx) => {
+          const rect = item.card.getBoundingClientRect();
+          const overlap = Math.max(0, Math.min(rect.right, rightBound) - Math.max(rect.left, leftBound));
+          const cardWidth = Math.max(rect.width || 200, 1);
+          const ratio = rect.width ? overlap / cardWidth : (idx < 2 ? 1 : 0);
+          return { ...item, idx, ratio, isUnmuted: item.video.dataset.userUnmuted === '1' };
+        });
+
+        const eligible = scored
+          .filter(item => item.video.dataset.userPaused !== '1' && (item.isUnmuted || item.ratio >= 0.25))
+          .sort((a, b) => (Number(b.isUnmuted) - Number(a.isUnmuted)) || (b.ratio - a.ratio) || (a.idx - b.idx));
+
+        const chosenVideos = new Set(eligible.slice(0, maxActive).map(item => item.video));
+        // If viewport geometry returned 0 width in test/initial layout, start first 2 reels cleanly
+        if (chosenVideos.size === 0 && scored.every(item => item.ratio === 0)) {
+          scored
+            .filter(item => item.video.dataset.userPaused !== '1')
+            .slice(0, maxActive)
+            .forEach(item => chosenVideos.add(item.video));
+        }
+
+        reelItems.forEach(({ video }) => {
+          if (chosenVideos.has(video)) {
+            if (video.paused || !video.dataset.loaded) {
+              attemptPlay(video);
+            }
+          } else if (!video.paused && video.dataset.userUnmuted !== '1') {
+            video.pause();
+            syncVideoUi(video);
+          }
+        });
+      };
+
+      if ('IntersectionObserver' in window && reelsSection) {
+        const reelsObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            reelsSectionVisible = entry.isIntersecting;
+            updateReelsPlayback();
+          });
+        }, { rootMargin: '140px 0px', threshold: 0.02 });
+        reelsObserver.observe(reelsSection);
+      } else {
+        updateReelsPlayback();
+      }
+
+      reelsWrap?.addEventListener('scroll', () => {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(updateReelsPlayback, 120);
+      }, { passive: true });
+
+      window.addEventListener('resize', () => {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(updateReelsPlayback, 150);
+      }, { passive: true });
+    }
+  }
+
+  // Register high-performance Service Worker for instant asset caching & preloading
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then((reg) => {
+          // Preload active catalog assets in background
+          if (navigator.serviceWorker.controller) {
+            // Service worker is actively controlling and caching requests
+          }
+        })
+        .catch(() => {
+          // Fall back transparently to standard browser HTTP disk cache
+        });
+    });
+  }
 
 })();

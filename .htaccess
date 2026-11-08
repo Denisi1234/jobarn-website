@@ -74,6 +74,18 @@ Options -Indexes
 AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
 
+# Serve WebP instead of JPEG/PNG when a .webp variant exists (smaller for mobile)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_ACCEPT} image/webp
+RewriteCond %{REQUEST_FILENAME} ^(.+)\.(jpe?g|png)$
+RewriteCond %{DOCUMENT_ROOT}%1.webp -f
+RewriteRule ^(.+)\.(jpe?g|png)$ $1.webp [T=image/webp,L]
+</IfModule>
+<IfModule mod_headers.c>
+Header append Vary Accept env=REDIRECT_accept
+</IfModule>
+
 # Caching - 1 month for static, no cache for html
 <IfModule mod_expires.c>
 ExpiresActive On

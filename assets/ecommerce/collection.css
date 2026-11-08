@@ -395,8 +395,20 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: clamp(13px, 1.25vw, 24px);
-  background: #e5e8e7;
+  background: #ffffff;
+  border: 1px solid #e6e8ea;
   color: #a1a6a6;
+}
+
+.collection-card-image.is-loading {
+  background: linear-gradient(110deg, #f3f4f6 30%, #e9ecef 50%, #f3f4f6 70%);
+  background-size: 200% 100%;
+  animation: collectionCardPulse 1.2s linear infinite;
+}
+
+@keyframes collectionCardPulse {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
 
 .collection-card-image img {
@@ -404,13 +416,17 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  padding: 10px;
   object-fit: contain;
-  background: #e5e8e7;
-  mix-blend-mode: multiply;
+  background: #ffffff;
 }
 
 .collection-card-image i {
   font-size: 3em;
+}
+
+.collection-card-image i[hidden] {
+  display: none;
 }
 
 .collection-card-title {

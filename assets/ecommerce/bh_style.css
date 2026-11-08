@@ -57,6 +57,19 @@ a {
   z-index: 1000;
   background: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  font-family: var(--bh-font);
+}
+
+.bh-sticky-header a,
+[data-jobarn-header] a,
+.bh-sticky-header button,
+[data-jobarn-header] button {
+  line-height: 1.35;
+}
+
+.bh-brand-logo {
+  display: inline-flex;
+  align-items: center;
 }
 
 .bh-top-header {
@@ -262,6 +275,7 @@ a {
   color: #ffffff;
   font-size: 11px;
   font-weight: 800;
+  line-height: 1.2;
   padding: 1px 6px;
   border-radius: 10px;
   min-width: 18px;
@@ -488,14 +502,41 @@ a {
   object-fit: cover;
   background: transparent;
   display: block;
-  opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 0.8s ease, transform 1.2s ease;
+  opacity: 1;
 }
 
-.bh-hero-video-banner.is-ready .bh-hero-plain-video {
-  opacity: 1;
-  transform: scale(1);
+.bh-video-play-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.72);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  padding-left: 3px;
+  z-index: 15;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+  transition: opacity 0.25s ease, transform 0.2s ease;
+}
+
+.upstore-video-card .bh-video-play-indicator {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+.bh-hero-video-banner.is-playing .bh-video-play-indicator,
+.upstore-video-card.is-playing .bh-video-play-indicator {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.88);
 }
 
 .bh-hero-video-mute-btn {
@@ -504,23 +545,61 @@ a {
   right: 30px;
   width: 50px;
   height: 50px;
+  padding: 0;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.78);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   cursor: pointer;
-  z-index: 10;
-  transition: background 0.2s, transform 0.2s;
+  z-index: 25;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+
+.bh-hero-video-mute-btn.is-unmuted {
+  background: var(--bh-green);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .bh-hero-video-mute-btn:hover {
   background: #ffffff;
   color: #111111;
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.bh-hero-video-mute-btn.is-unmuted:hover {
+  background: #235f36;
+  color: #ffffff;
+}
+
+.bh-svg-icon {
+  width: 1em;
+  height: 1em;
+  display: block;
+  flex-shrink: 0;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+.bh-hero-video-mute-btn .bh-icon-unmuted,
+.upstore-video-mute-btn .bh-icon-unmuted {
+  display: none;
+}
+
+.bh-hero-video-mute-btn.is-unmuted .bh-icon-muted,
+.upstore-video-mute-btn.is-unmuted .bh-icon-muted {
+  display: none;
+}
+
+.bh-hero-video-mute-btn.is-unmuted .bh-icon-unmuted,
+.upstore-video-mute-btn.is-unmuted .bh-icon-unmuted {
+  display: block;
 }
 
 @media (max-width: 1200px) {
@@ -1182,6 +1261,9 @@ a {
   grid-column: 4 / 5;
   grid-row: 2 / 3;
   background-color: #000000;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #ffffff;
   overflow: hidden;
   align-items: center;
@@ -1447,26 +1529,36 @@ a {
 /* Rounded mute / audio icon at bottom right matching screenshot */
 .upstore-video-mute-btn {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 38px;
-  height: 38px;
-  background: rgba(255, 255, 255, 0.85);
+  bottom: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #1e293b;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-  z-index: 5;
-  transition: background 0.2s, transform 0.2s;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
+  z-index: 25;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+}
+
+.upstore-video-mute-btn.is-unmuted {
+  background: var(--bh-green);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .upstore-video-card:hover .upstore-video-mute-btn {
-  background: rgba(255, 255, 255, 1);
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 @media (max-width: 1200px) {
@@ -1479,7 +1571,14 @@ a {
 @media (max-width: 768px) {
   .upstore-video-card {
     height: 360px;
-    min-width: 180px;
+    min-width: 195px;
+  }
+  .upstore-video-mute-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 12px;
+    right: 12px;
+    font-size: 17px;
   }
 }
 
@@ -2062,13 +2161,29 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
 
 .bh-mobile-menu-toggle {
   display: none;
-  background: none;
-  border: none;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   font-size: 22px;
-  color: #1a2228;
+  color: #111111;
   cursor: pointer;
-  padding: 6px;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  padding: 0;
   line-height: 1;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.bh-mobile-menu-toggle:hover,
+.bh-mobile-menu-toggle:focus-visible {
+  background: #eef2f6;
+  border-color: #94a3b8;
+  outline: none;
 }
 
 /* Mobile Drawer Overlay */
@@ -2240,11 +2355,14 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
   }
 
   .bh-user-actions {
-    gap: 12px;
+    gap: 10px;
   }
 
   .bh-action-item {
+    min-width: 42px;
+    min-height: 42px;
     padding: 6px;
+    justify-content: center;
   }
 
   .bh-gift-deals-btn {
@@ -2254,7 +2372,7 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
 
 @media (max-width: 768px) {
   .bh-top-header {
-    padding: 8px 0;
+    padding: 14px 0;
   }
 
   .bh-top-row {
@@ -2262,13 +2380,14 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    row-gap: 8px;
+    row-gap: 12px;
+    column-gap: 10px;
   }
 
   .bh-logo-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     order: 1;
   }
 
@@ -2276,7 +2395,7 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
     order: 2;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
   }
 
   .bh-search-section {
@@ -2287,25 +2406,27 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
   }
 
   .bh-search-form input {
-    height: 38px;
-    font-size: 13.5px;
+    height: 44px;
+    font-size: 16px;
+    padding: 0 46px 0 14px;
   }
 
   .bh-search-btn {
-    height: 38px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
+    font-size: 17px;
   }
 
   .bh-brand-box {
-    height: 42px;
+    height: 48px;
     padding: 0;
     border: none;
     background: transparent;
   }
 
   .bh-logo-img {
-    max-height: 38px;
-    max-width: 140px;
+    max-height: 44px;
+    max-width: 165px;
   }
 
   .bh-nav-bar {
@@ -2313,12 +2434,14 @@ body:has(.bh-modal-overlay[open]) > [data-site-footer] .site-footer-chat {
   }
 
   .bh-nav-links {
-    padding: 2px 0;
+    padding: 5px 0;
   }
 
   .bh-nav-link {
-    padding: 8px 12px;
-    font-size: 12.5px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    line-height: 1.3;
+    font-weight: 600;
     white-space: nowrap;
   }
 }

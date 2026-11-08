@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Your Cart | Jobarn Tanzania</title>
+    <title>Your Cart &amp; Checkout | Jobarn Tanzania</title>
     <meta name="robots" content="noindex,follow">
     <link rel="icon" href="assets/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/icons.css">
     <link rel="stylesheet" href="assets/ecommerce/bh_style.css">
     <link rel="stylesheet" href="assets/css/site-footer.css">
@@ -16,39 +20,222 @@
 <body class="collection-page cart-page">
     <header class="collection-header" data-collection-header></header>
     <main class="collection-shell cart-main" data-cart-page aria-labelledby="cartTitle">
-        <h1 id="cartTitle">Your cart</h1>
-        <div class="cart-layout">
-            <section aria-label="Cart items">
-                <div id="cartEmpty" class="cart-empty" hidden style="padding: 30px 0;">
-                    <i class="fa-solid fa-basket-shopping" style="font-size: 48px; color: #94a3b8; margin-bottom: 16px; display: block;"></i>
-                    <h2 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Your cart is currently empty</h2>
-                    <p style="color: #64748b; margin-bottom: 24px; font-size: 15px;">Explore our 2026 tech setups, pro cameras, custom workstations, and ergonomic desks.</p>
-                    <a class="cart-continue" href="collections/all.html" style="display: inline-block; background: #111; color: #fff; padding: 12px 28px; border-radius: 6px; font-weight: 600; text-decoration: none;">
-                        Explore All Products <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
-                    </a>
-                </div>
-                <table class="cart-table" id="cartTable" aria-label="Products in your cart" hidden>
-                    <colgroup><col><col class="cart-quantity-column"><col class="cart-total-column"></colgroup>
-                    <thead>
-                        <tr><th scope="col">Product</th><th scope="col">Quantity</th><th scope="col">Total</th></tr>
-                    </thead>
-                    <tbody id="cartItems"></tbody>
-                </table>
-                <a class="cart-continue" id="cartContinue" href="collections/all.html">Continue shopping <i class="fal fa-chevron-right" aria-hidden="true"></i></a>
-            </section>
-            <section class="cart-summary" id="cartSummary" aria-label="Order summary" hidden>
-                <fieldset class="cart-note">
-                    <legend><label for="cartNote">Order special instructions</label></legend>
-                    <textarea id="cartNote" rows="5" maxlength="1000"></textarea>
-                </fieldset>
-                <div class="cart-summary-total">
-                    <span>Total</span>
-                    <strong id="cartTotal" aria-live="polite">0.00 TZS</strong>
-                </div>
-                <button class="cart-checkout" id="whatsappCheckoutBtn" type="button">Checkout</button>
-                <p class="cart-checkout-note">Taxes and shipping are confirmed on WhatsApp.</p>
-            </section>
+        <!-- STEP 1: CART VIEW -->
+        <div id="cartStepView">
+            <h1 id="cartTitle">Your cart</h1>
+            <div class="cart-layout">
+                <section aria-label="Cart items">
+                    <div id="cartEmpty" class="cart-empty" hidden style="padding: 30px 0;">
+                        <i class="fa-solid fa-basket-shopping" style="font-size: 48px; color: #94a3b8; margin-bottom: 16px; display: block;"></i>
+                        <h2 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Your cart is currently empty</h2>
+                        <p style="color: #64748b; margin-bottom: 24px; font-size: 15px;">Explore our 2026 tech setups, pro cameras, custom workstations, and ergonomic desks.</p>
+                        <a class="cart-continue" href="collections/all.html" style="display: inline-block; background: #111; color: #fff; padding: 12px 28px; border-radius: 6px; font-weight: 600; text-decoration: none;">
+                            Explore All Products <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                        </a>
+                    </div>
+                    <table class="cart-table" id="cartTable" aria-label="Products in your cart" hidden>
+                        <colgroup><col><col class="cart-quantity-column"><col class="cart-total-column"></colgroup>
+                        <thead>
+                            <tr><th scope="col">Product</th><th scope="col">Quantity</th><th scope="col">Total</th></tr>
+                        </thead>
+                        <tbody id="cartItems"></tbody>
+                    </table>
+                    <a class="cart-continue" id="cartContinue" href="collections/all.html">Continue shopping <i class="fal fa-chevron-right" aria-hidden="true"></i></a>
+                </section>
+                <section class="cart-summary" id="cartSummary" aria-label="Order summary" hidden>
+                    <fieldset class="cart-note">
+                        <legend><label for="cartNote">Order special instructions</label></legend>
+                        <textarea id="cartNote" rows="5" maxlength="1000" placeholder="Optional delivery notes, custom request, or billing info..."></textarea>
+                    </fieldset>
+                    <div class="cart-summary-total">
+                        <span>Total</span>
+                        <strong id="cartTotal" aria-live="polite">0.00 TZS</strong>
+                    </div>
+                    <button class="cart-checkout" id="proceedCheckoutBtn" type="button">
+                        Proceed to Checkout <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                    </button>
+                    <p class="cart-checkout-note">Fill in basic details on the next step to generate a formal quotation &amp; send via WhatsApp.</p>
+                </section>
+            </div>
         </div>
+
+        <!-- STEP 2: CHECKOUT & QUOTATION VIEW -->
+        <div id="checkoutStepView" hidden>
+            <div class="checkout-topbar">
+                <button type="button" id="backToCartBtn" class="checkout-back-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Back to cart
+                </button>
+                <span class="checkout-heading-label">Quotation &amp; Delivery Details</span>
+            </div>
+
+            <div class="checkout-grid">
+                <!-- Left Column: Compact Flat Customer Form -->
+                <form id="checkoutForm" class="checkout-form-card" novalidate>
+                    <div id="coFormError" class="co-form-error" role="alert" hidden></div>
+
+                    <div class="co-delivery-toggle" role="tablist" aria-label="Delivery method">
+                        <button type="button" class="co-delivery-tab active" data-delivery-tab="ship" role="tab" aria-selected="true">
+                            Delivery (Ship)
+                        </button>
+                        <button type="button" class="co-delivery-tab" data-delivery-tab="pickup" role="tab" aria-selected="false">
+                            Showroom Pickup (Free)
+                        </button>
+                    </div>
+
+                    <div class="co-field-row co-two-col">
+                        <div class="co-field">
+                            <label class="co-label" for="coName">Full Name <span class="req">*</span></label>
+                            <input type="text" id="coName" name="fullName" class="co-input" placeholder="Your name" autocomplete="name" required>
+                        </div>
+                        <div class="co-field">
+                            <label class="co-label" for="coPhone">Phone / WhatsApp <span class="req">*</span></label>
+                            <input type="tel" id="coPhone" name="phone" class="co-input" placeholder="+255 716 026 781" autocomplete="tel" required>
+                        </div>
+                    </div>
+
+                    <div class="co-field-row co-two-col">
+                        <div class="co-field">
+                            <label class="co-label" for="coEmail">Email (optional)</label>
+                            <input type="email" id="coEmail" name="email" class="co-input" placeholder="name@company.co.tz" autocomplete="email">
+                        </div>
+                        <div class="co-field">
+                            <label class="co-label" for="coCompany">Company (optional)</label>
+                            <input type="text" id="coCompany" name="company" class="co-input" placeholder="Organization name" autocomplete="organization">
+                        </div>
+                    </div>
+
+                    <!-- Shipping Fields (shown when deliveryMethod === 'ship') -->
+                    <div id="coShipFields" class="co-field-row co-two-col">
+                        <div class="co-field">
+                            <label class="co-label" for="coAddress">Delivery Address / Area <span class="req">*</span></label>
+                            <input type="text" id="coAddress" name="address" class="co-input" placeholder="e.g. Mikocheni, Mbezi, Posta" autocomplete="street-address" required>
+                        </div>
+                        <div class="co-field">
+                            <label class="co-label" for="coCity">City / Region <span class="req">*</span></label>
+                            <input type="text" id="coCity" name="city" class="co-input" value="Dar es Salaam" placeholder="Dar es Salaam" autocomplete="address-level2" required>
+                        </div>
+                    </div>
+
+                    <!-- Pickup Note (shown when deliveryMethod === 'pickup') -->
+                    <div id="coPickupInfo" class="co-pickup-box" hidden>
+                        <strong>Pickup Location:</strong>
+                        <span class="co-pickup-address">SkyCity Mall, 1st Floor, Off Mlimani City, Dar es Salaam</span>
+                        <span class="co-pickup-free">FREE</span>
+                    </div>
+
+                    <div class="co-field">
+                        <label class="co-label" for="coNotes">Notes (optional)</label>
+                        <textarea id="coNotes" class="co-input co-textarea" rows="2" maxlength="1000" placeholder="Installation, proforma invoice, or delivery notes..."></textarea>
+                    </div>
+
+                    <div class="co-form-footer">
+                        <label class="co-checkbox-row">
+                            <input type="checkbox" id="coSaveInfo" checked>
+                            <span>Save details for next time</span>
+                        </label>
+                    </div>
+
+                    <div class="co-actions">
+                        <button type="submit" id="whatsappCheckoutBtn" class="co-submit-btn">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>Send Quotation via WhatsApp</span>
+                        </button>
+                        <button type="button" id="printQuoteBtn" class="co-secondary-btn">
+                            <i class="fa-solid fa-print"></i> Print Quote
+                        </button>
+                    </div>
+                    <p id="coActionStatus" class="co-action-status" hidden></p>
+                </form>
+
+                <!-- Right Column: Flat Order Summary -->
+                <aside class="checkout-summary-card" aria-label="Quotation Summary">
+                    <h2 class="co-summary-heading">Order Summary</h2>
+                    <div id="checkoutSummaryItems" class="co-summary-items"></div>
+
+                    <div class="co-summary-breakdown">
+                        <div class="co-summary-row">
+                            <span>Subtotal</span>
+                            <span id="coSummarySubtotal">TSh 0.00</span>
+                        </div>
+                        <div class="co-summary-row">
+                            <span>Delivery</span>
+                            <span id="coSummaryShipping">Confirmed on quote</span>
+                        </div>
+                        <div class="co-summary-total">
+                            <span>Total</span>
+                            <div>
+                                <small>TZS</small>
+                                <strong id="coSummaryTotal">TSh 0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- Printable A4 Proforma Quotation Sheet (visible only on print / Save PDF) -->
+        <section id="printableQuoteSheet" class="printable-quote-sheet" aria-hidden="true">
+            <div class="pq-header">
+                <div class="pq-brand">
+                    <img src="assets/img/jobarn-logo.jpeg" alt="Jobarn Logo" class="pq-logo" onerror="this.style.display='none'">
+                    <div>
+                        <h2 id="pqCompanyName">JOBARN GENERAL TRADING COMPANY LTD</h2>
+                        <p id="pqCompanyAddress">SkyCity Mall, 1st Floor, Off Mlimani City, University Road, Dar es Salaam</p>
+                        <p id="pqCompanyContact">+255 716-026-781 &bull; info@jobarn.co.tz</p>
+                    </div>
+                </div>
+                <div class="pq-meta">
+                    <h1>PROFORMA QUOTATION</h1>
+                    <p><strong>Quote Ref:</strong> <span id="pqQuoteRef">JB-0000</span></p>
+                    <p><strong>Date:</strong> <span id="pqQuoteDate">-</span></p>
+                    <p><strong>Validity:</strong> 7 Days</p>
+                </div>
+            </div>
+
+            <div class="pq-client-box">
+                <div>
+                    <h3>Prepared For</h3>
+                    <p id="pqClientName">-</p>
+                    <p id="pqClientCompany"></p>
+                    <p id="pqClientContact">-</p>
+                </div>
+                <div>
+                    <h3>Fulfillment &amp; Delivery</h3>
+                    <p id="pqFulfillment">-</p>
+                    <p id="pqClientAddress">-</p>
+                </div>
+            </div>
+
+            <table class="pq-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item Description</th>
+                        <th class="num">Qty</th>
+                        <th class="num">Unit Price (TZS)</th>
+                        <th class="num">Total (TZS)</th>
+                    </tr>
+                </thead>
+                <tbody id="pqItemsBody"></tbody>
+            </table>
+
+            <div class="pq-totals">
+                <div class="pq-notes">
+                    <strong>Notes / Instructions:</strong>
+                    <p id="pqNotesText">None</p>
+                </div>
+                <div class="pq-sum-box">
+                    <div><span>Subtotal</span><strong id="pqSubtotal">TZS 0.00</strong></div>
+                    <div><span>Delivery / Tax</span><strong id="pqShippingNote">Confirmed on order</strong></div>
+                    <div class="pq-grand"><span>Estimated Total</span><strong id="pqGrandTotal">TZS 0.00</strong></div>
+                </div>
+            </div>
+
+            <div class="pq-footer">
+                Thank you for choosing Jobarn General Trading Company LTD. Confirm this quotation via WhatsApp or at our SkyCity Mall Showroom.
+            </div>
+        </section>
+
         <template id="cartRowTemplate">
             <tr>
                 <th scope="row">

@@ -40,12 +40,12 @@
             <div class="bh-container bh-top-row">
                 <!-- Left: Mobile Menu Toggle & Logo & Expert Phone -->
                 <div class="bh-logo-section">
-                    <button type="button" class="bh-mobile-menu-toggle" id="bhCollectionMobileMenuToggle" aria-label="Open Navigation Menu">
-                        <i class="fa-solid fa-bars"></i>
+                    <button type="button" class="bh-mobile-menu-toggle" id="bhCollectionMobileMenuToggle" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="bhCollectionMobileDrawer">
+                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2.2H3V6zm0 4.9h18v2.2H3v-2.2zm0 4.9h18V18H3v-2.2z"/></svg>
                     </button>
                     <a href="${route("index.html")}" class="bh-brand-logo" title="Jobarn Store Tanzania">
                         <div class="bh-brand-box">
-                            <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-logo-img" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'bh-logo-fallback\\'>JOBARN</span>';">
+                            <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-logo-img" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'bh-logo-fallback\\'>JOBARN</span>';">
                         </div>
                     </a>
                     
@@ -63,7 +63,7 @@
                     <form class="bh-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
                         <input type="text" id="bhSearchInput" placeholder="Search desks, chairs, monitors, cameras, audio, CCTV..." autocomplete="off">
                         <button type="submit" class="bh-search-btn" aria-label="Search">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.07l4.24 4.24-1.42 1.42-4.24-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
                         </button>
                     </form>
                 </div>
@@ -73,7 +73,7 @@
                     <!-- Deal Zone -->
                     <a href="${route("collections/deals.html")}" class="bh-action-item bh-deal-zone" title="Deal Zone">
                         <div class="bh-deal-icon-wrap">
-                            <i class="fa-solid fa-crosshairs"></i>
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v3a7 7 0 0 1 7 7h3v2h-3a7 7 0 0 1-7 7v3h-2v-3a7 7 0 0 1-7-7H0v-2h3a7 7 0 0 1 7-7V2h2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
                         </div>
                         <div class="bh-action-text">
                             <span class="bh-deal-timer">Ends In <b id="countdownTimer">08:31:24</b></span>
@@ -84,7 +84,7 @@
                     <!-- Cart Button -->
                     <a class="bh-action-item bh-cart-btn" id="cartOpenBtn" href="${route("cart.html")}" title="View Cart">
                         <div class="bh-cart-icon-wrap">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM3 2h2.2l.7 3H21l-1.9 8.2a2 2 0 0 1-2 1.6H8.3l-.5 2H19v2H6.5a1.5 1.5 0 0 1-1.46-1.85L6.1 14 4.2 5H2V3h1V2zm3.3 5l1.3 6h9.3l1.4-6H6.3z"/></svg>
                             <span class="bh-cart-count" id="cartBadge" style="display:none;">0</span>
                         </div>
                         <div class="bh-action-text">
@@ -165,18 +165,25 @@
     function openDrawer() {
         drawer?.classList.add('active');
         overlay?.classList.add('active');
+        toggleBtn?.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
     }
 
     function closeDrawer() {
         drawer?.classList.remove('active');
         overlay?.classList.remove('active');
+        toggleBtn?.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
 
     toggleBtn?.addEventListener('click', openDrawer);
     closeBtn?.addEventListener('click', closeDrawer);
     overlay?.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer?.classList.contains('active')) {
+            closeDrawer();
+        }
+    });
 
     if (!layout) return;
     layout.innerHTML = `
@@ -200,7 +207,7 @@
     current?.setAttribute("aria-current", "page");
 
     // Apply live store settings dynamically
-    fetch(route("assets/ecommerce/settings.json"), { cache: "no-store" })
+    fetch(route("assets/ecommerce/settings.json"), { cache: "no-cache" })
         .then(res => res.ok ? res.json() : null)
         .then(settings => {
             if (!settings || typeof settings !== "object") return;

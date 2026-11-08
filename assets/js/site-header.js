@@ -37,24 +37,13 @@
         <!-- Top Utility Header -->
         <header class="bh-top-header">
             <div class="bh-container bh-top-row">
-                <!-- Left: Mobile Menu Toggle & Logo & Expert Phone -->
+                <!-- Left: Logo -->
                 <div class="bh-logo-section">
-                    <button type="button" class="bh-mobile-menu-toggle" id="bhSharedMobileMenuToggle" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="bhSharedMobileDrawer">
-                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2.2H3V6zm0 4.9h18v2.2H3v-2.2zm0 4.9h18V18H3v-2.2z"/></svg>
-                    </button>
                     <a href="${route("index.html")}" class="bh-brand-logo" title="Jobarn Store Tanzania">
                         <div class="bh-brand-box">
                             <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-logo-img" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'bh-logo-fallback\\'>JOBARN</span>';">
                         </div>
                     </a>
-                    
-                    <div class="bh-expert-phone">
-                        <i class="fa-solid fa-headset bh-phone-icon"></i>
-                        <div class="bh-expert-text">
-                            <span class="bh-expert-sub">Ask Our Experts</span>
-                            <a href="tel:+255716026781" class="bh-phone-number">+255 716-026-781 <i class="fa-solid fa-chevron-down" style="font-size:10px; margin-left:2px;"></i></a>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Center: Search Bar -->

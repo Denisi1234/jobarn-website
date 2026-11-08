@@ -1,24 +1,19 @@
 // Jobarn Storefront Service Worker - High Performance Cache & Adaptive 2G/3G Preloader
-const CACHE_NAME = 'jobarn-media-v2';
+const CACHE_NAME = 'jobarn-media-v3';
 
-// 1. Critical lightweight assets (HTML, CSS, JS, logo, posters, key products - ~200KB total)
+// 1. Critical lightweight assets (HTML, CSS, JS, logo, key products - ~150KB total)
 // Downloaded immediately even on slow 2G/3G connections without clogging data
 const CRITICAL_ASSETS = [
   '/',
   '/index.html',
+  '/cart.html',
+  '/assets/ecommerce/cart.css',
   '/assets/ecommerce/bh_style.css',
   '/assets/css/site-footer.css',
   '/assets/ecommerce/ecommerce.js',
   '/assets/js/site-header.js',
   '/assets/js/site-footer.js',
   '/assets/img/jobarn-logo.jpeg',
-  '/assets/img/hero-video-poster.jpg',
-  '/assets/img/upgrades/custom-pc-poster.jpg',
-  '/assets/ecommerce/reels/reel-1.jpg',
-  '/assets/ecommerce/reels/reel-2.jpg',
-  '/assets/ecommerce/reels/reel-3.jpg',
-  '/assets/ecommerce/reels/reel-4.jpg',
-  '/assets/ecommerce/reels/reel-5.jpg',
   '/assets/ecommerce/products/skadis-pegboard.jpg',
   '/assets/ecommerce/products/sihoo-m59as.jpg',
   '/assets/ecommerce/products/green-lion-cooler.jpg',
@@ -95,15 +90,15 @@ self.addEventListener('fetch', (event) => {
 
   if (isStatic) {
     event.respondWith(
-      caches.match(req).then((cached) => {
-        // Return from local cache in 1-3ms if available
+      caches.match(req, { ignoreSearch: true }).then((cached) => {
+        // Return from local cache in 1-3ms if available - NEVER re-download
         if (cached) {
           return cached;
         }
 
-        // Otherwise fetch from server, store in cache for all next times
+        // Otherwise fetch once from server, store in cache for all next times
         return fetch(req).then((response) => {
-          if (response && response.status === 200) {
+          if (response && (response.status === 200 || response.type === 'opaque')) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
           }
@@ -116,7 +111,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For HTML pages: Network-first, fall back to offline cache
+  // For HTML pages: Stale-While-Revalidate (instant 1ms load from cache, background refresh for freshest content)
+  if (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        const fetchPromise = fetch(req).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          }
+          return networkResponse;
+        }).catch(() => cached);
+
+        // If page is already visited/cached, open it instantly without network wait!
+        return cached || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // Fallback for any other requests
   event.respondWith(
     fetch(req).catch(() => caches.match(req))
   );

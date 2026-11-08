@@ -1052,7 +1052,18 @@
       });
     }
 
+    // 1ms synchronous local save & badge update
     saveCart();
+
+    // Instant visual feedback on cart icon
+    const cartBtn = document.getElementById('cartOpenBtn');
+    if (cartBtn) {
+      cartBtn.style.transform = 'scale(1.22)';
+      cartBtn.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      setTimeout(() => { cartBtn.style.transform = ''; }, 220);
+    }
+
+    // Navigate smoothly to cart without lag
     window.location.assign(cartUrl.href);
   }
 
@@ -1140,9 +1151,19 @@
     renderModalGallery(content, prod);
     const chat = document.querySelector('[data-site-footer] .site-footer-chat');
     const modalChat = modal.querySelector('.bh-modal-chat');
-    modalChat.replaceChildren();
-    if (chat) modalChat.append(chat.cloneNode(true));
-    if (!modal.open) modal.showModal();
+    if (modalChat) {
+      modalChat.replaceChildren();
+      if (chat) modalChat.append(chat.cloneNode(true));
+    }
+    try {
+      if (typeof modal.showModal === 'function') {
+        if (!modal.open) modal.showModal();
+      } else {
+        modal.setAttribute('open', '');
+      }
+    } catch {
+      modal.setAttribute('open', '');
+    }
     content.scrollTop = 0;
   }
 
@@ -1207,7 +1228,13 @@
 
   function closeModal() {
     const modal = document.getElementById('productModalOverlay');
-    if (modal?.open) modal.close();
+    if (!modal) return;
+    try {
+      if (typeof modal.close === 'function' && modal.open) {
+        modal.close();
+      }
+    } catch {}
+    modal.removeAttribute('open');
   }
 
   function generateQuoteRef() {
@@ -1859,10 +1886,19 @@
     function attachVideoLifecycle(video) {
       if (!video || video.dataset.lifecycleBound === '1') return;
       video.dataset.lifecycleBound = '1';
+      video.loop = true;
+      video.setAttribute('loop', '');
       video.playsInline = true;
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', 'true');
       video.setAttribute('x5-playsinline', 'true');
+
+      // Guarantee infinite non-stop loop playback: automatically replay if video ends
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        attemptPlay(video);
+      });
+
       ['play', 'playing', 'pause', 'ended', 'loadeddata', 'canplay', 'volumechange'].forEach(evt => {
         video.addEventListener(evt, () => syncVideoUi(video));
       });
@@ -1955,55 +1991,16 @@
     }).filter(Boolean);
 
     if (reelItems.length > 0) {
-      let reelsSectionVisible = !('IntersectionObserver' in window);
-      let scrollTimer = null;
+      // Start and keep all reel videos playing infinitely
+      reelItems.forEach(({ video }) => {
+        attemptPlay(video);
+      });
 
-      const updateReelsPlayback = () => {
-        if (!reelsSectionVisible) {
-          reelItems.forEach(({ video }) => {
-            if (!video.paused) {
-              video.pause();
-              syncVideoUi(video);
-            }
-          });
-          return;
-        }
-
-        const wrapRect = reelsWrap?.getBoundingClientRect();
-        const viewportW = window.innerWidth || document.documentElement.clientWidth || 1024;
-        const leftBound = wrapRect ? Math.max(0, wrapRect.left) : 0;
-        const rightBound = wrapRect ? Math.min(viewportW, wrapRect.right) : viewportW;
-
-        const maxActive = isCompactViewport() ? 2 : reelItems.length;
-        const scored = reelItems.map((item, idx) => {
-          const rect = item.card.getBoundingClientRect();
-          const overlap = Math.max(0, Math.min(rect.right, rightBound) - Math.max(rect.left, leftBound));
-          const cardWidth = Math.max(rect.width || 200, 1);
-          const ratio = rect.width ? overlap / cardWidth : (idx < 2 ? 1 : 0);
-          return { ...item, idx, ratio, isUnmuted: item.video.dataset.userUnmuted === '1' };
-        });
-
-        const eligible = scored
-          .filter(item => item.video.dataset.userPaused !== '1' && (item.isUnmuted || item.ratio >= 0.25))
-          .sort((a, b) => (Number(b.isUnmuted) - Number(a.isUnmuted)) || (b.ratio - a.ratio) || (a.idx - b.idx));
-
-        const chosenVideos = new Set(eligible.slice(0, maxActive).map(item => item.video));
-        // If viewport geometry returned 0 width in test/initial layout, start first 2 reels cleanly
-        if (chosenVideos.size === 0 && scored.every(item => item.ratio === 0)) {
-          scored
-            .filter(item => item.video.dataset.userPaused !== '1')
-            .slice(0, maxActive)
-            .forEach(item => chosenVideos.add(item.video));
-        }
-
+      // Keep ensuring they are playing as user scrolls
+      const ensureAllReelsPlaying = () => {
         reelItems.forEach(({ video }) => {
-          if (chosenVideos.has(video)) {
-            if (video.paused || !video.dataset.loaded) {
-              attemptPlay(video);
-            }
-          } else if (!video.paused && video.dataset.userUnmuted !== '1') {
-            video.pause();
-            syncVideoUi(video);
+          if (video.paused && video.dataset.userPaused !== '1') {
+            attemptPlay(video);
           }
         });
       };
@@ -2011,24 +2008,16 @@
       if ('IntersectionObserver' in window && reelsSection) {
         const reelsObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            reelsSectionVisible = entry.isIntersecting;
-            updateReelsPlayback();
+            if (entry.isIntersecting) {
+              ensureAllReelsPlaying();
+            }
           });
-        }, { rootMargin: '140px 0px', threshold: 0.02 });
+        }, { rootMargin: '200px 0px', threshold: 0.01 });
         reelsObserver.observe(reelsSection);
-      } else {
-        updateReelsPlayback();
       }
 
-      reelsWrap?.addEventListener('scroll', () => {
-        if (scrollTimer) clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(updateReelsPlayback, 120);
-      }, { passive: true });
-
-      window.addEventListener('resize', () => {
-        if (scrollTimer) clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(updateReelsPlayback, 150);
-      }, { passive: true });
+      reelsWrap?.addEventListener('scroll', ensureAllReelsPlaying, { passive: true });
+      window.addEventListener('resize', ensureAllReelsPlaying, { passive: true });
     }
   }
 

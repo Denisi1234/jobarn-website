@@ -1,5 +1,5 @@
 // Jobarn Storefront Service Worker - High Performance Cache & Adaptive 2G/3G Preloader
-const CACHE_NAME = 'jobarn-media-v7';
+const CACHE_NAME = 'jobarn-media-v8';
 
 // 1. Critical lightweight assets (HTML, CSS, JS, logo, key products, tech workspace assets - ~200KB total)
 // Downloaded immediately even on slow 2G/3G connections without clogging data
@@ -79,6 +79,39 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+async function serveWithRangeSupport(request, cachedResponse) {
+  const rangeHeader = request.headers.get('range');
+  if (!rangeHeader) return cachedResponse;
+
+  const arrayBuffer = await cachedResponse.arrayBuffer();
+  const totalLength = arrayBuffer.byteLength;
+  const bytesMatch = rangeHeader.match(/bytes=(\d+)-(\d+)?/);
+  if (!bytesMatch) return cachedResponse;
+
+  const start = parseInt(bytesMatch[1], 10);
+  const end = bytesMatch[2] ? parseInt(bytesMatch[2], 10) : totalLength - 1;
+
+  if (start >= totalLength || end >= totalLength) {
+    return new Response(null, {
+      status: 416,
+      statusText: 'Range Not Satisfiable',
+      headers: { 'Content-Range': `bytes */${totalLength}` }
+    });
+  }
+
+  const sliced = arrayBuffer.slice(start, end + 1);
+  return new Response(sliced, {
+    status: 206,
+    statusText: 'Partial Content',
+    headers: {
+      'Content-Type': cachedResponse.headers.get('Content-Type') || 'video/mp4',
+      'Content-Range': `bytes ${start}-${end}/${totalLength}`,
+      'Content-Length': String(sliced.byteLength),
+      'Accept-Ranges': 'bytes'
+    }
+  });
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
@@ -102,6 +135,9 @@ self.addEventListener('fetch', (event) => {
       caches.match(req, { ignoreSearch: true }).then((cached) => {
         // Return from local cache in 1-3ms if available - NEVER re-download
         if (cached) {
+          if (req.headers.has('range')) {
+            return serveWithRangeSupport(req, cached);
+          }
           return cached;
         }
 

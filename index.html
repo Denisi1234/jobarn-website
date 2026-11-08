@@ -18,7 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Critical Upgrade Images Preload -->
+    <!-- Critical Hero & Upgrade Media Preload (Instant <3ms load) -->
+    <link rel="preload" as="image" href="assets/img/hero-video-poster.jpg?v=6" fetchpriority="high">
     <link rel="preload" as="image" href="assets/img/upgrades/desk-setup.webp" type="image/webp" fetchpriority="high">
     <link rel="preload" as="image" href="assets/img/upgrades/production.jpg">
 
@@ -163,6 +164,28 @@
                 <video class="bh-hero-plain-video" id="heroPlainVideo" autoplay loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="auto" poster="assets/img/hero-video-poster.jpg?v=6">
                     <source src="assets/video/video_new_tumehama-web.mp4?v=6" type="video/mp4">
                 </video>
+                <script>
+                    (function() {
+                        var v = document.getElementById('heroPlainVideo');
+                        if (!v) return;
+                        v.muted = true;
+                        v.defaultMuted = true;
+                        function play() {
+                            var p = v.play();
+                            if (p && typeof p.catch === 'function') {
+                                p.catch(function() {
+                                    var onInteract = function() { v.play().catch(function(){}); };
+                                    window.addEventListener('touchstart', onInteract, { once: true, passive: true });
+                                    window.addEventListener('click', onInteract, { once: true });
+                                });
+                            }
+                        }
+                        play();
+                        v.addEventListener('loadedmetadata', play, { once: true });
+                        v.addEventListener('canplay', play, { once: true });
+                        v.addEventListener('ended', function() { v.currentTime = 0; play(); });
+                    })();
+                </script>
                 <button class="bh-hero-video-mute-btn" id="heroVideoMuteBtn" type="button" aria-label="Unmute video sound" aria-pressed="false">
                     <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
                     <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>

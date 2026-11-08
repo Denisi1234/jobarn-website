@@ -1928,7 +1928,6 @@
     const heroBannerVideo = document.getElementById('heroPlainVideo') || document.querySelector('.bh-hero-plain-video');
     const heroBannerEl = document.getElementById('heroVideoBanner') || heroBannerVideo?.parentElement;
     const heroBannerMuteBtn = document.getElementById('heroVideoMuteBtn');
-    let heroVisible = true;
 
     if (heroBannerVideo) {
       attachVideoLifecycle(heroBannerVideo);
@@ -1937,36 +1936,39 @@
         heroBannerMuteBtn.addEventListener('click', (e) => toggleVideoSound(heroBannerVideo, e));
       }
 
-      heroBannerEl?.addEventListener('click', (e) => {
-        if (e.target.closest('#heroVideoMuteBtn, .bh-hero-video-mute-btn')) return;
-        toggleContainerPlayback(heroBannerVideo);
-      });
-
-      const tryAutoStartHero = () => {
-        if (!heroVisible || heroBannerVideo.dataset.userPaused === '1') return;
+      // Autoplay immediately upon site load and keep playing continuously
+      const startContinuousPlayback = () => {
         if (heroBannerEl && heroBannerEl.style.display === 'none') return;
-        attemptPlay(heroBannerVideo);
+        heroBannerVideo.muted = true;
+        heroBannerVideo.defaultMuted = true;
+        heroBannerVideo.loop = true;
+        heroBannerVideo.setAttribute('muted', '');
+        heroBannerVideo.setAttribute('loop', '');
+        heroBannerVideo.setAttribute('playsinline', '');
+        heroBannerVideo.setAttribute('webkit-playsinline', 'true');
+        const playPromise = heroBannerVideo.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {
+            const resumeOnTouch = () => {
+              heroBannerVideo.play().catch(() => {});
+            };
+            window.addEventListener('touchstart', resumeOnTouch, { once: true, passive: true });
+            window.addEventListener('click', resumeOnTouch, { once: true });
+          });
+        }
+        syncVideoUi(heroBannerVideo);
       };
 
-      // Give above-the-fold images (poster, logo, department icons) a short head start
-      setTimeout(tryAutoStartHero, 250);
+      startContinuousPlayback();
+      ['loadedmetadata', 'canplay', 'canplaythrough'].forEach(evt => {
+        heroBannerVideo.addEventListener(evt, startContinuousPlayback, { once: true });
+      });
 
-      if ('IntersectionObserver' in window && heroBannerEl) {
-        const heroObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            heroVisible = entry.isIntersecting;
-            if (entry.isIntersecting) {
-              if (!heroBannerVideo.dataset.userPaused && heroBannerEl.style.display !== 'none') {
-                attemptPlay(heroBannerVideo);
-              }
-            } else if (!heroBannerVideo.paused) {
-              heroBannerVideo.pause();
-              syncVideoUi(heroBannerVideo);
-            }
-          });
-        }, { threshold: 0.05 });
-        heroObserver.observe(heroBannerEl);
-      }
+      // Keep playing continuously on loop without ever pausing
+      heroBannerVideo.addEventListener('ended', () => {
+        heroBannerVideo.currentTime = 0;
+        startContinuousPlayback();
+      });
     }
 
     // 2. Upgrades bento "Build Your Own Custom PC" muted ambient video

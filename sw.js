@@ -1,5 +1,5 @@
 // Jobarn Storefront Service Worker - High Performance Cache & Adaptive 2G/3G Preloader
-const CACHE_NAME = 'jobarn-media-v5';
+const CACHE_NAME = 'jobarn-media-v6';
 
 // 1. Critical lightweight assets (HTML, CSS, JS, logo, key products, tech workspace assets - ~200KB total)
 // Downloaded immediately even on slow 2G/3G connections without clogging data

@@ -9,109 +9,80 @@
     const currentPath = window.location.pathname.toLowerCase();
 
     const navLinks = [
-        { label: "All Products", path: "collections/all.html", category: "all" },
-        { label: "Photography", path: "collections/photography.html", category: "photography" },
-        { label: "Standing Desks", path: "collections/standing-desks.html", category: "desks" },
-        { label: "Ergonomic Chairs", path: "collections/ergonomic-chairs.html", category: "chairs" },
-        { label: "Monitors & Displays", path: "collections/monitors.html", category: "monitors" },
-        { label: "Keyboards", path: "collections/keyboards.html", category: "keyboards" },
-        { label: "Upgrades", path: "collections/top-products.html", category: "upgrades" },
-        { label: "Gaming", path: "collections/gaming.html", category: "gaming" },
-        { label: "Computers", path: "collections/computers.html", category: "computers" },
-        { label: "Pro Video", path: "collections/pro-video.html", category: "pro-video" },
-        { label: "Pro Audio", path: "collections/audio-equipments.html", category: "audio" },
-        { label: "Accessories", path: "collections/gadgets.html", category: "accessories" },
-        { label: "Surveillance & CCTV", path: "collections/cctv-security.html", category: "security" },
-        { label: "Networking", path: "collections/networking.html", category: "networking" },
-        { label: "Used", path: "collections/used.html", category: "used" }
+        { label: "Store", path: "collections/all.html", category: "all" },
+        { label: "Desks", path: "collections/standing-desks.html", category: "desks" },
+        { label: "Chairs", path: "collections/ergonomic-chairs.html", category: "chairs" },
+        { label: "Displays", path: "collections/monitors.html", category: "monitors" },
+        { label: "Mac & PC", path: "collections/computers.html", category: "computers" },
+        { label: "Cameras", path: "collections/photography.html", category: "photography" },
+        { label: "Audio", path: "collections/audio-equipments.html", category: "audio" },
+        { label: "Deals", path: "collections/deals.html", category: "deals" }
     ];
 
     const navLinksHtml = navLinks.map(link => {
-        const isActive = currentPath.includes(link.path.replace("collections/", "").toLowerCase());
+        const linkSlug = link.path.replace("collections/", "").replace(".html", "").toLowerCase();
+        const isActive = currentPath.includes(linkSlug);
         const activeClass = isActive ? " active" : "";
-        const usedClass = link.category === "used" ? " bh-nav-used" : "";
-        return `<li><a href="${route(link.path)}" class="bh-nav-link${activeClass}${usedClass}" data-category="${link.category}">${link.label}</a></li>`;
+        const dealsClass = link.category === "deals" ? " apple-nav-deals" : "";
+        return `<li><a href="${route(link.path)}" class="apple-nav-link${activeClass}${dealsClass}" data-category="${link.category}">${link.label}</a></li>`;
     }).join("");
 
-    header.className = "bh-site-header-shared bh-sticky-header";
+    header.className = "apple-header";
+    header.id = "appleGlobalHeader";
     header.innerHTML = `
-        <!-- Top Utility Header -->
-        <div class="bh-top-header">
-            <div class="bh-container bh-top-row">
-                <!-- Left: Mobile Menu Toggle & Logo & Expert Phone -->
-                <div class="bh-logo-section">
-                    <button type="button" class="bh-mobile-menu-toggle" id="bhCollectionMobileMenuToggle" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="bhCollectionMobileDrawer">
-                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2.2H3V6zm0 4.9h18v2.2H3v-2.2zm0 4.9h18V18H3v-2.2z"/></svg>
-                    </button>
-                    <a href="${route("index.html")}" class="bh-brand-logo" title="Jobarn Store Tanzania">
-                        <div class="bh-brand-box">
-                            <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-logo-img" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'bh-logo-fallback\\'>JOBARN</span>';">
-                        </div>
-                    </a>
-                    
-                    <div class="bh-expert-phone">
-                        <i class="fa-solid fa-headset bh-phone-icon"></i>
-                        <div class="bh-expert-text">
-                            <span class="bh-expert-sub">Ask Our Experts</span>
-                            <a href="tel:+255716026781" class="bh-phone-number">+255 716-026-781 <i class="fa-solid fa-chevron-down" style="font-size:10px; margin-left:2px;"></i></a>
-                        </div>
-                    </div>
-                </div>
+        <!-- Apple-Style Global Header -->
+        <div class="apple-header-inner">
+                <!-- Left: Brand Logo -->
+                <a href="${route("index.html")}" class="apple-nav-logo" title="Jobarn Store">
+                    <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="apple-logo-img" fetchpriority="high" decoding="async">
+                </a>
 
-                <!-- Center: Search Bar -->
-                <div class="bh-search-section">
-                    <form class="bh-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
-                        <input type="text" id="bhSearchInput" placeholder="Search desks, chairs, monitors, cameras, audio, CCTV..." autocomplete="off">
-                        <button type="submit" class="bh-search-btn" aria-label="Search">
-                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.07l4.24 4.24-1.42 1.42-4.24-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
+                <!-- Center: Navigation Links -->
+                <nav class="apple-nav" aria-label="Main Navigation">
+                    <ul class="apple-nav-list" id="bhNavCategories">
+                        ${navLinksHtml}
+                    </ul>
+                </nav>
+
+                <!-- Right: Search, Cart, Mobile Toggle -->
+                <div class="apple-header-actions">
+                    <!-- Search Trigger Form (Compact Apple Search) -->
+                    <form class="apple-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
+                        <button type="submit" class="apple-action-btn" aria-label="Search">
+                            <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
+                        <input type="text" id="bhSearchInput" class="apple-search-input" placeholder="Search Jobarn..." autocomplete="off">
                     </form>
-                </div>
 
-                <!-- Right: Deal Zone, Account, Cart -->
-                <div class="bh-user-actions">
-                    <!-- Deal Zone -->
-                    <a href="${route("collections/deals.html")}" class="bh-action-item bh-deal-zone" title="Deal Zone">
-                        <div class="bh-deal-icon-wrap">
-                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v3a7 7 0 0 1 7 7h3v2h-3a7 7 0 0 1-7 7v3h-2v-3a7 7 0 0 1-7-7H0v-2h3a7 7 0 0 1 7-7V2h2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
-                        </div>
-                        <div class="bh-action-text">
-                            <span class="bh-deal-timer">Ends In <b id="countdownTimer">08:31:24</b></span>
-                            <span class="bh-action-label">Deal Zone</span>
-                        </div>
+                    <!-- Cart / Bag Button -->
+                    <a class="apple-action-btn apple-bag-btn" id="cartOpenBtn" href="${route("cart.html")}" aria-label="Shopping Bag">
+                        <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span class="apple-bag-count" id="cartBadge" style="display:none;">0</span>
                     </a>
 
-                    <!-- Cart Button -->
-                    <a class="bh-action-item bh-cart-btn" id="cartOpenBtn" href="${route("cart.html")}" title="View Cart">
-                        <div class="bh-cart-icon-wrap">
-                            <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM3 2h2.2l.7 3H21l-1.9 8.2a2 2 0 0 1-2 1.6H8.3l-.5 2H19v2H6.5a1.5 1.5 0 0 1-1.46-1.85L6.1 14 4.2 5H2V3h1V2zm3.3 5l1.3 6h9.3l1.4-6H6.3z"/></svg>
-                            <span class="bh-cart-count" id="cartBadge" style="display:none;">0</span>
-                        </div>
-                        <div class="bh-action-text">
-                            <span class="bh-action-label">My Cart</span>
-                        </div>
-                    </a>
+                    <!-- Mobile Hamburger Toggle -->
+                    <button type="button" class="apple-action-btn apple-mobile-toggle" id="bhMobileMenuToggle" aria-label="Menu" aria-expanded="false">
+                        <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Navigation Bar Strip -->
-        <nav class="bh-nav-bar">
-            <div class="bh-container bh-nav-inner">
-                <ul class="bh-nav-links" id="bhNavCategories">
-                    ${navLinksHtml}
-                </ul>
-            </div>
-        </nav>
 
         <!-- Mobile Navigation Drawer -->
-        <div class="bh-mobile-drawer-overlay" id="bhCollectionMobileDrawerOverlay"></div>
-        <aside class="bh-mobile-drawer" id="bhCollectionMobileDrawer">
+        <div class="bh-mobile-drawer-overlay" id="bhMobileDrawerOverlay"></div>
+        <aside class="bh-mobile-drawer" id="bhMobileDrawer">
             <div class="bh-drawer-header">
                 <a href="${route("index.html")}">
-                    <img src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-drawer-logo-img">
+                    <img loading="lazy" decoding="async" src="${route("assets/img/jobarn-logo.jpeg")}" alt="Jobarn Logo" class="bh-drawer-logo-img">
                 </a>
-                <button type="button" class="bh-drawer-close-btn" id="bhCollectionMobileDrawerClose" aria-label="Close Menu">
+                <button type="button" class="bh-drawer-close-btn" id="bhMobileDrawerClose" aria-label="Close Menu">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -156,11 +127,35 @@
         </aside>
     `;
 
+    // Synchronize Cart Badge across all pages using localStorage
+    function syncCartBadge() {
+        try {
+            const saved = JSON.parse(localStorage.getItem('jobarn_cart') || '[]');
+            const count = Array.isArray(saved)
+                ? saved.reduce((sum, item) => sum + (Number(item?.quantity) || 0), 0)
+                : 0;
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        } catch (e) {
+            // ignore
+        }
+    }
+
+    syncCartBadge();
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'jobarn_cart') {
+            syncCartBadge();
+        }
+    });
+
     // Drawer event listeners for collection header
-    const toggleBtn = document.getElementById('bhCollectionMobileMenuToggle');
-    const drawer = document.getElementById('bhCollectionMobileDrawer');
-    const overlay = document.getElementById('bhCollectionMobileDrawerOverlay');
-    const closeBtn = document.getElementById('bhCollectionMobileDrawerClose');
+    const toggleBtn = document.getElementById('bhMobileMenuToggle');
+    const drawer = document.getElementById('bhMobileDrawer');
+    const overlay = document.getElementById('bhMobileDrawerOverlay');
+    const closeBtn = document.getElementById('bhMobileDrawerClose');
 
     function openDrawer() {
         drawer?.classList.add('active');
@@ -213,12 +208,6 @@
             if (!settings || typeof settings !== "object") return;
             if (settings.contactPhone) {
                 const telDigits = String(settings.contactPhone).replace(/[^\d+]/g, "");
-                header.querySelectorAll(".bh-phone-number").forEach(el => {
-                    el.setAttribute("href", "tel:" + telDigits);
-                    const icon = el.querySelector("i");
-                    el.textContent = settings.contactPhone + " ";
-                    if (icon) el.appendChild(icon);
-                });
                 header.querySelectorAll(".bh-drawer-phone").forEach(el => {
                     el.setAttribute("href", "tel:" + telDigits);
                     const span = el.querySelector("span");

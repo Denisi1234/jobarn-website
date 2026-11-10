@@ -9,102 +9,78 @@
     <link rel="canonical" href="https://jobarn.co.tz/">
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
-    <link rel="preload" as="image" href="assets/img/hero-video-poster.jpg" fetchpriority="high">
     <link rel="preload" as="image" href="assets/img/jobarn-logo.jpeg" fetchpriority="high">
 
     <!-- Fonts & Font Awesome Icons (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Critical Hero & Upgrade Media Preload (Instant <3ms load) -->
-    <link rel="preload" as="image" href="assets/img/hero-video-poster.jpg?v=6" fetchpriority="high">
     <link rel="preload" as="image" href="assets/img/upgrades/desk-setup.webp" type="image/webp" fetchpriority="high">
     <link rel="preload" as="image" href="assets/img/upgrades/production.jpg">
 
     <!-- B&H / Jobarn Unified Stylesheet -->
-    <link rel="stylesheet" href="assets/ecommerce/bh_style.css?v=6">
-    <link rel="stylesheet" href="assets/css/site-footer.css">
+    <link rel="stylesheet" href="assets/ecommerce/bh_style.css?v=14">
+    <link rel="stylesheet" href="assets/css/site-footer.css?v=13">
     <script src="assets/js/site-footer.js" defer></script>
 </head>
 <body>
 
-    <!-- Sticky Header Wrapper (top row + nav strip) -->
-    <div class="bh-sticky-header">
-    <!-- 1. Top Utility Header -->
-    <header class="bh-top-header">
-        <div class="bh-container bh-top-row">
-            <!-- Left: Logo -->
-            <div class="bh-logo-section">
-                <a href="index.html" class="bh-brand-logo" title="Jobarn Store Tanzania">
-                    <div class="bh-brand-box">
-                        <img src="assets/img/jobarn-logo.jpeg" alt="Jobarn Logo" class="bh-logo-img" fetchpriority="high" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='&lt;span class=&quot;bh-logo-fallback&quot;&gt;JOBARN&lt;/span&gt;';">
-                    </div>
-                </a>
-            </div>
+    <!-- Apple-Style Global Header -->
+    <header class="apple-header" id="appleGlobalHeader">
+        <div class="apple-header-inner">
+            <!-- Left: Brand Logo -->
+            <a href="index.html" class="apple-nav-logo" title="Jobarn Store">
+                <img src="assets/img/jobarn-logo.jpeg" alt="Jobarn Logo" class="apple-logo-img" fetchpriority="high" decoding="async">
+            </a>
 
-            <!-- Center: Search Bar -->
-            <div class="bh-search-section">
-                <form class="bh-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
-                    <input type="text" id="bhSearchInput" placeholder="Search desks, chairs, monitors, cameras, audio, CCTV..." autocomplete="off">
-                    <button type="submit" class="bh-search-btn" aria-label="Search">
-                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.07l4.24 4.24-1.42 1.42-4.24-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
+            <!-- Center: Navigation Links -->
+            <nav class="apple-nav" aria-label="Main Navigation">
+                <ul class="apple-nav-list" id="bhNavCategories">
+                    <li><a href="collections/all.html" class="apple-nav-link" data-category="all">Store</a></li>
+                    <li><a href="collections/standing-desks.html" class="apple-nav-link" data-category="desks">Desks</a></li>
+                    <li><a href="collections/ergonomic-chairs.html" class="apple-nav-link" data-category="chairs">Chairs</a></li>
+                    <li><a href="collections/monitors.html" class="apple-nav-link" data-category="monitors">Displays</a></li>
+                    <li><a href="collections/computers.html" class="apple-nav-link" data-category="computers">Mac &amp; PC</a></li>
+                    <li><a href="collections/photography.html" class="apple-nav-link" data-category="photography">Cameras</a></li>
+                    <li><a href="collections/audio-equipments.html" class="apple-nav-link" data-category="audio">Audio</a></li>
+                    <li><a href="collections/deals.html" class="apple-nav-link apple-nav-deals">Deals</a></li>
+                </ul>
+            </nav>
+
+            <!-- Right: Search, Cart, Mobile Toggle -->
+            <div class="apple-header-actions">
+                <!-- Search Trigger Form (Compact Apple Search) -->
+                <form class="apple-search-form" onsubmit="event.preventDefault(); window.JobarnStore?.doSearch();">
+                    <button type="submit" class="apple-action-btn" aria-label="Search">
+                        <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </button>
+                    <input type="text" id="bhSearchInput" class="apple-search-input" placeholder="Search Jobarn..." autocomplete="off">
                 </form>
-            </div>
 
-            <!-- Right: Deal Zone, Account, Cart -->
-            <div class="bh-user-actions">
-                <!-- Deal Zone -->
-                <a href="collections/deals.html" class="bh-action-item bh-deal-zone" title="Deal Zone">
-                    <div class="bh-deal-icon-wrap">
-                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v3a7 7 0 0 1 7 7h3v2h-3a7 7 0 0 1-7 7v3h-2v-3a7 7 0 0 1-7-7H0v-2h3a7 7 0 0 1 7-7V2h2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
-                    </div>
-                    <div class="bh-action-text">
-                        <span class="bh-deal-timer">Ends In <b id="countdownTimer">08:31:24</b></span>
-                        <span class="bh-action-label">Deal Zone</span>
-                    </div>
+                <!-- Cart / Bag Button -->
+                <a class="apple-action-btn apple-bag-btn" id="cartOpenBtn" href="cart.html" aria-label="Shopping Bag">
+                    <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="apple-bag-count" id="cartBadge" style="display:none;">0</span>
                 </a>
 
-                <!-- Cart Button -->
-                <a class="bh-action-item bh-cart-btn" id="cartOpenBtn" href="cart.html" title="View Cart">
-                    <div class="bh-cart-icon-wrap">
-                        <svg class="bh-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM3 2h2.2l.7 3H21l-1.9 8.2a2 2 0 0 1-2 1.6H8.3l-.5 2H19v2H6.5a1.5 1.5 0 0 1-1.46-1.85L6.1 14 4.2 5H2V3h1V2zm3.3 5l1.3 6h9.3l1.4-6H6.3z"/></svg>
-                        <span class="bh-cart-count" id="cartBadge" style="display:none;">0</span>
-                    </div>
-                    <div class="bh-action-text">
-                        <span class="bh-action-label">My Cart</span>
-                    </div>
-                </a>
+                <!-- Mobile Hamburger Toggle -->
+                <button type="button" class="apple-action-btn apple-mobile-toggle" id="bhMobileMenuToggle" aria-label="Menu" aria-expanded="false">
+                    <svg class="apple-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
-
-    <!-- 2. Navigation Bar Strip -->
-    <nav class="bh-nav-bar">
-        <div class="bh-container bh-nav-inner">
-            <ul class="bh-nav-links" id="bhNavCategories">
-                <li><a href="collections/all.html" class="bh-nav-link active" data-category="all">All Products</a></li>
-                <li><a href="collections/photography.html" class="bh-nav-link" data-category="photography">Photography</a></li>
-                <li><a href="collections/standing-desks.html" class="bh-nav-link" data-category="desks">Standing Desks</a></li>
-                <li><a href="collections/ergonomic-chairs.html" data-category="chairs" class="bh-nav-link">Ergonomic Chairs</a></li>
-                <li><a href="collections/monitors.html" data-category="monitors" class="bh-nav-link">Monitors & Displays</a></li>
-                <li><a href="collections/keyboards.html" data-category="keyboards" class="bh-nav-link">Keyboards</a></li>
-                <li><a href="collections/top-products.html" data-category="upgrades" class="bh-nav-link">Upgrades</a></li>
-                <li><a href="collections/gaming.html" data-category="gaming" class="bh-nav-link">Gaming</a></li>
-                <li><a href="collections/computers.html" data-category="computers" class="bh-nav-link">Computers</a></li>
-                <li><a href="collections/pro-video.html" data-category="pro-video" class="bh-nav-link">Pro Video</a></li>
-                <li><a href="collections/audio-equipments.html" data-category="audio" class="bh-nav-link">Pro Audio</a></li>
-                <li><a href="collections/gadgets.html" data-category="accessories" class="bh-nav-link">Accessories</a></li>
-                <li><a href="collections/cctv-security.html" data-category="security" class="bh-nav-link">Surveillance & CCTV</a></li>
-                <li><a href="collections/networking.html" data-category="networking" class="bh-nav-link">Networking</a></li>
-                <li><a href="collections/used.html" class="bh-nav-link bh-nav-used" data-category="used">Used</a></li>
-            </ul>
-        </div>
-    </nav>
-    </div>
-    <!-- /Sticky Header Wrapper -->
 
     <!-- Mobile Navigation Drawer -->
     <div class="bh-mobile-drawer-overlay" id="bhMobileDrawerOverlay"></div>
@@ -157,39 +133,21 @@
         </div>
     </aside>
 
-    <!-- 5. Hero Banner: Plain Tumehama Video -->
-    <section class="bh-hero-slider-section">
+    <!-- Apple-Style Minimal Hero -->
+    <section class="apple-hero-section">
         <div class="bh-container">
-            <div class="bh-hero-video-banner has-poster" id="heroVideoBanner" style="background-image: url('assets/img/hero-video-poster.jpg?v=6');">
-                <video class="bh-hero-plain-video" id="heroPlainVideo" autoplay loop muted playsinline webkit-playsinline="true" x5-playsinline="true" preload="auto" poster="assets/img/hero-video-poster.jpg?v=6">
-                    <source src="assets/video/video_new_tumehama-web.mp4?v=6" type="video/mp4">
-                </video>
-                <script>
-                    (function() {
-                        var v = document.getElementById('heroPlainVideo');
-                        if (!v) return;
-                        v.muted = true;
-                        v.defaultMuted = true;
-                        function play() {
-                            var p = v.play();
-                            if (p && typeof p.catch === 'function') {
-                                p.catch(function() {
-                                    var onInteract = function() { v.play().catch(function(){}); };
-                                    window.addEventListener('touchstart', onInteract, { once: true, passive: true });
-                                    window.addEventListener('click', onInteract, { once: true });
-                                });
-                            }
-                        }
-                        play();
-                        v.addEventListener('loadedmetadata', play, { once: true });
-                        v.addEventListener('canplay', play, { once: true });
-                        v.addEventListener('ended', function() { v.currentTime = 0; play(); });
-                    })();
-                </script>
-                <button class="bh-hero-video-mute-btn" id="heroVideoMuteBtn" type="button" aria-label="Unmute video sound" aria-pressed="false">
-                    <svg class="bh-svg-icon bh-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3l3.3-3.3-1.4-1.4L15 10.6l-3.3-3.3-1.4 1.4 3.3 3.3-3.3 3.3 1.4 1.4 3.3-3.3 3.3 3.3 1.4-1.4-3.2-3.3z"/></svg>
-                    <svg class="bh-svg-icon bh-icon-unmuted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                </button>
+            <div class="apple-hero-stage">
+                <div class="apple-hero-content">
+                    <h1 class="apple-hero-title">Jobarn Apex Pro</h1>
+                    <p class="apple-hero-tagline">Smart dual-motor standing desk.</p>
+                    <div class="apple-cta-group">
+                        <a href="collections/standing-desks.html" class="apple-btn-pill apple-btn-primary">Explore</a>
+                        <a href="collections/all.html" class="apple-link-learn">Buy <i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="apple-hero-media-wrap">
+                    <img src="assets/img/upgrades/desk-setup.webp" alt="Jobarn Apex Pro Standing Desk" class="apple-hero-img" fetchpriority="high" decoding="async">
+                </div>
             </div>
         </div>
     </section>
